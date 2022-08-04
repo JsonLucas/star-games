@@ -68,5 +68,6 @@ model levels {
   id Int @id @default(autoincrement())
   name String
   features Json
+  totalPoints Int
   users users[]
 }
