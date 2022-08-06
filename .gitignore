@@ -1,5 +1,5 @@
 .env
-/prisma
+/api
 # Logs
 logs
 *.log
