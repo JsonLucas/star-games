@@ -1,12 +1,12 @@
 import { Fragment } from "react";
 import Header from "../../components/Header";
-import Products from "../../components/Products";
+import SingleProduct from "../../components/SingleProduct";
 
-export default function Home () {
+export default function Product() {
     return (
         <Fragment>
             <Header />
-            <Products />
+            <SingleProduct />
         </Fragment>
     );
 }

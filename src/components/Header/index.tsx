@@ -88,9 +88,10 @@ export default function Header() {
                     <NavbarLink>
                         <Link to="/">Home</Link>
                     </NavbarLink>
-                    <NavbarLink>Link</NavbarLink>
-                    <NavbarLink>Link</NavbarLink>
-                    <NavbarLink>Link</NavbarLink>
+                    <NavbarLink>Histórico</NavbarLink>
+                    <NavbarLink>Mais comprados</NavbarLink>
+                    <NavbarLink>Recomendações diárias</NavbarLink>
+                    {logged && <NavbarLink>Minha conta</NavbarLink>}
                 </RowLinks>
             </RowBottom>
         </Container>
