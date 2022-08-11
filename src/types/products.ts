@@ -8,3 +8,5 @@ export interface IProducts {
     shipping: number,
     stock: number
 };
+
+export type ProductCartData = Pick<IProducts, 'name' | 'price' | 'image'>;

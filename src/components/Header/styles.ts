@@ -56,6 +56,7 @@ export const RowBottom = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
 `;
 
 export const RowLinks = styled.nav`
@@ -109,5 +110,55 @@ export const UserWelcome = styled.p`
     span {
         font-size: 20px;
         font-weight: bold;
+    }
+`;
+
+export const RowUserProgress = styled.div`
+    box-sizing: border-box;
+    width: 300px;
+    height: 35px;
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    background-color: transparent;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+`;
+
+export const BoxStar = styled.div`
+    box-sizing: border-box;
+    height: 100%;
+    width: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background-color: transparent;
+    font-size: 33px;
+    p {
+        position: absolute;
+        margin: 0 auto;
+        font-size: 15px;
+        font-weight: bold;
+    }
+`;
+
+export const RowProgressBar = styled.div`
+    box-sizing: border-box;
+    text-align: center;
+    color: white;
+`;
+
+export const BoxCart = styled.div`
+    box-sizing: border-box;
+    position: absolute;
+    top: 15px;
+    right: 30px;
+    font-size: 25px;
+    color: white;
+    cursor: pointer;
+    &:hover{
+        color: red;
     }
 `;

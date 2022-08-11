@@ -8,8 +8,8 @@ import {
     SubmitButton,
     WrapperFields
 } from "../styles";
-import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
     IoIosAt,
     IoIosLock,
@@ -25,15 +25,16 @@ import { ThreeDots } from "react-loader-spinner";
 import { signUpRequest } from "../../../api/services/users";
 
 export default function FormSignUp() {
-    const navigate = useNavigate();
     const [disabled, setDisabled] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const { register, handleSubmit } = useForm();
-    const signUp = async (data: any) => {
+    const navigate = useNavigate();
+    const signUp = async (userData: any) => {
         try{
             setDisabled(true);
             setLoading(true);
-            await signUpRequest(data);
+            const { data } = await signUpRequest(userData);
+            localStorage.setItem('token', JSON.stringify(data.token));
             alert('conta criada com sucesso!');
             navigate('/');
         }catch(e: any){
@@ -44,7 +45,7 @@ export default function FormSignUp() {
     return (
         <Container>
             <CardForm signUpCard={true} onSubmit={handleSubmit(signUp)}>
-                <WrapperFields> { /*criar cronograma -- negócio lá da joice*/ }
+                <WrapperFields>
                     <RowField>
                         <BoxFieldIcon>
                             <IoIosPerson />

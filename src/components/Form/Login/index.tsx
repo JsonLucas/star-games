@@ -27,6 +27,7 @@ export default function FormLogin (){
             const { data } = await loginRequest(login);
             alert(`bem vindo ${login.login}`);
             localStorage.setItem('token', JSON.stringify(data.token));
+            localStorage.setItem('levelData', JSON.stringify(data.levelData));
             navigate('/');
         }catch(e: any){
             console.log(e);

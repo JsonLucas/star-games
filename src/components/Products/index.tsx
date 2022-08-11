@@ -1,19 +1,35 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { getProducts } from "../../api/services/products";
 import { IProducts } from "../../types/products";
+import { useLocation, useNavigate } from "react-router-dom";
+import { getProducts } from "../../api/services/products";
+import { useEffect, useState } from "react";
+import { IoIosHeartEmpty, IoIosHeart } from 'react-icons/io';
+import { 
+    Container, 
+    FavoriteIcon, 
+    ImageSection, 
+    ProductBox, 
+    ProductInformations, 
+    RowInformation, 
+    RowSection 
+} from "./styles";
 import Loading from "../Loading";
-import { Container, ImageSection, ProductBox, ProductInformations, RowInformation, RowSection } from "./styles";
 
 export default function Products() {
-    const [load, setLoad] = useState<boolean>(true);
     const [data, setData] = useState<Array<IProducts>>([]);
+    const [load, setLoad] = useState<boolean>(true);
+    const location = useLocation();
     const navigate = useNavigate();
     useEffect(() => {
+        console.log(location);
         (async () => {
             try {
                 const { data } = await getProducts();
-                setData(data);
+                if(location.pathname === '/'){
+                    const formatData = data.sort((a: any, b: any) => { return a-b; });
+                    setData(formatData.slice(0, 5));
+                }else{
+                    setData(data);
+                }
                 setLoad(false);
             } catch (e: any) {
                 console.log(e);
@@ -27,6 +43,9 @@ export default function Products() {
                 <RowSection>
                     {data.map((item, index) =>
                         <ProductBox key={index} onClick={() => { navigate(`/product/${item._id}`) }}>
+                            <FavoriteIcon>
+                                <IoIosHeartEmpty />
+                            </FavoriteIcon>
                             <ImageSection>
                                 <img src={item.image} alt='Fail do charge the image' />
                             </ImageSection>
@@ -39,7 +58,7 @@ export default function Products() {
                                 </RowInformation>
                                 <RowInformation>
                                     R$ {item.shipping}
-                                </RowInformation> {/* colocar uma row pra decrição do product */}
+                                </RowInformation>
                             </ProductInformations>
                         </ProductBox>
                     )}

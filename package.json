@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ramonak/react-progress-bar": "^5.0.2",
     "axios": "^0.27.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -16,6 +17,8 @@
     "react-icons": "^4.4.0",
     "react-input-mask": "^2.0.4",
     "react-loader-spinner": "^5.1.7-beta.1",
+    "react-modal": "^3.15.1",
+    "react-progressbar": "^15.4.1",
     "react-router-dom": "^6.3.0",
     "react-toastify": "^9.0.8",
     "styled-components": "^5.3.5"
@@ -24,6 +27,7 @@
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
     "@types/react-input-mask": "^3.0.1",
+    "@types/react-modal": "^3.13.1",
     "@types/styled-components": "^5.1.25",
     "@vitejs/plugin-react": "^2.0.0",
     "typescript": "^4.6.4",

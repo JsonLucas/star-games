@@ -24,6 +24,7 @@ export const ProductBox = styled.div`
     background-color: white;
     box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
     cursor: pointer;
+    position: relative;
 `;
 
 export const ImageSection = styled.div`
@@ -48,5 +49,15 @@ export const ProductInformations = styled.div`
 export const RowInformation = styled.p`
     box-sizing: border-box;
     font-size: 17px;
+    font-weight: bold;
+`;
+
+export const FavoriteIcon = styled.p`
+    box-sizing: border-box;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    color: black;
+    font-size: 22px;
     font-weight: bold;
 `;

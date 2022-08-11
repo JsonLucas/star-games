@@ -14,7 +14,7 @@ export const RowProductInformations = styled.section`
     box-sizing: border-box;
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     position: relative;
 `;
 
@@ -22,7 +22,6 @@ export const ProductImageBox = styled.div`
     box-sizing: border-box;
     padding: 5px;
     width: 30%;
-    background-color: darkred;
     img{
         width: 100%;
         height: 100%;
@@ -49,14 +48,18 @@ export const RowData = styled.p<IProps>`
 export const AddCartSection = styled.div`
     box-sizing: border-box;
     padding: 5px;
-    width: 30%;
-    background-color: darkred;
+    width: 100%;
+    margin-top: 20px;
+    div{
+        margin: auto;
+        width: 90%;
+    }
 `;
 
 export const ActionButtons = styled.input`
     box-sizing: border-box;
     padding: 10px;
-    width: 80%;
+    width: 100%;
     border: none;
     border-radius: 5px;
     margin: auto;
@@ -67,6 +70,7 @@ export const BackButton = styled.div`
     box-sizing: border-box;
     position: absolute;
     top: 105%;
+    left: 0px;
     border: 1px solid lightgrey;
     padding: 10px;
     font-weight: bold;
