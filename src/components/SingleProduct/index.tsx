@@ -24,6 +24,7 @@ export default function SingleProduct() {
     const { productId } = useParams();
     const navigate = useNavigate();
     const addToCart = (product: ProductCartData) => {
+        localStorage.removeItem('cart');
         try {
             const cart = localStorage.getItem('cart');
             if (cart) {
@@ -69,16 +70,17 @@ export default function SingleProduct() {
                     <RowData dataType='shipping'>Frete: R$ {product.shipping}</RowData>
                     <AddCartSection>
                         <div>
-                            <ActionButtons value='Comprar' type='button' />
+                            <ActionButtons value='Comprar' type='button' 
+                            onClick={() => { addToCart({ _id: product._id, name: product.name, price: (product.price+product.shipping), image: product.image }); navigate('/purchase/payment'); } } />
                         </div>
                         <div>
                             <ActionButtons value='Adicionar ao carrinho.' type='button'
-                                onClick={() => { addToCart({name: product.name, price: product.price, image: product.image}); }} />
+                                onClick={() => { addToCart({ _id: product._id, name: product.name, price: (product.price+product.shipping), image: product.image }); }} />
                         </div>
                     </AddCartSection>
                     <ToastContainer />
                 </ProductDataBox>
-                <BackButton onClick={() => { navigate(-1); }}>
+                <BackButton onClick={() => navigate(-1) }>
                     <IoIosArrowBack /> Voltar
                 </BackButton>
             </RowProductInformations>}

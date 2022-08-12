@@ -20,5 +20,12 @@ export interface Levels {
     }
 }
 
+export interface Cards {
+    name: string,
+    number: string,
+    cvv: string,
+    expirationDate: Date,
+}
+
 export type Login = { login: string } & Pick<Users, 'password'>;
 export type SignUp = Omit<Users, 'id'>;

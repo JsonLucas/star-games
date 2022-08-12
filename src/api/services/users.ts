@@ -12,3 +12,7 @@ export const signUpRequest = async (body: SignUp) => {
 export const verificateToken = async (token: string) => {
     return await axiosInstance.post('/auth-user', { token });
 } 
+
+export const getCityByCep = async (cep: string) => {
+    return await axiosInstance.get(`https://viacep.com.br/ws/${cep}/json/`);
+}

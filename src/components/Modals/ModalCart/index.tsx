@@ -1,6 +1,6 @@
 import { ProductCartData } from '../../../types/products';
 import { useEffect, useState } from 'react';
-import { BoxImage, BoxProductInfo, customStyles, RowProductInformation } from './styles';
+import { BoxImage, BoxProductInfo, customStyles, ProductInfo, RowProductInformation } from './styles';
 import { IoIosTrash, IoIosCloseCircle } from 'react-icons/io';
 import Modal from 'react-modal';
 
@@ -8,6 +8,8 @@ interface Props {
     open: boolean,
     setOpen: Function
 }
+
+type CartData = ProductCartData & {qtde: number};
 
 export default function ModalCart({ open, setOpen }: Props) {
     const [cartData, setCartData] = useState<Array<ProductCartData>>([]);
@@ -39,8 +41,8 @@ export default function ModalCart({ open, setOpen }: Props) {
                     <img src={item.image} />
                 </BoxImage>
                 <BoxProductInfo>
-                    <p>{item.name}</p>
-                    <p>{item.price}</p> {/*adicionar um contador do lado pra produto repetido */}
+                    <ProductInfo isName={true}>{item.name}</ProductInfo>
+                    <ProductInfo isName={false}>R$ {item.price}</ProductInfo> {/*adicionar um contador do lado pra produto repetido */}
                 </BoxProductInfo>
             </RowProductInformation>)}
             <button>Concluir pedido</button>

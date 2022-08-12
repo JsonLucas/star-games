@@ -20,7 +20,6 @@ export default function Products() {
     const location = useLocation();
     const navigate = useNavigate();
     useEffect(() => {
-        console.log(location);
         (async () => {
             try {
                 const { data } = await getProducts();
