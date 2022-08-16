@@ -7,14 +7,12 @@ export const Container = styled.main`
     background-color: transparent;
     margin: 15px auto;
     position: relative;
+    font-family: 'Silkscreen', cursive;
 `; 
 
 export const RowSection = styled.div`
     box-sizing: border-box;
     width: 100%;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
 `;
 
 export const ProductBox = styled.div`
@@ -25,6 +23,8 @@ export const ProductBox = styled.div`
     box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
     cursor: pointer;
     position: relative;
+    float: left;
+    margin: 0px 14.2px 15px 0px;
 `;
 
 export const ImageSection = styled.div`

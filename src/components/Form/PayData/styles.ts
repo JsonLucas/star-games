@@ -27,7 +27,7 @@ export const RowField = styled.div<Props>`
     box-sizing: border-box;
     display: flex;
     ${({fieldType}) => fieldType === 'button' 
-    ? `margin-top: 10px; width: 30%;` 
+    ? `margin-top: 10px; width: 30%; cursor: pointer;` 
     : `${fieldType === 'cvv' 
         ? 'width: 30%;' 
         : 'width: 100%;'}

@@ -8,23 +8,34 @@ import {
     RowInformation,
     RowSection
 } from "../Products/styles";
-import { useEffect, useState, Fragment } from "react";
 import Loading from "../Loading";
 import { Empty } from "./styles";
-import { IPurchases } from "../../types/purchases";
+import { IProducts } from "../../types/products";
+import { getProductById } from "../../api/services/products";
+import { toast, ToastContainer } from "react-toastify";
+import { useEffect, useState, Fragment } from "react";
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function HistoryList() {
-    const [data, setData] = useState<Array<IPurchases>>([]); //ajustar
+    const [data, setData] = useState<Array<IProducts>>([]);
     const [load, setLoad] = useState<boolean>(false);
     const navigate = useNavigate();
     useEffect(() => {
+        async function getProducts(productsIds: Array<any>) {
+            let prods = [];
+            for(let i = 0; i < productsIds.length; i++){
+                const { data } = await getProductById(productsIds[i].productId);
+                prods.push(data);
+            }
+            return prods;
+        }
         (async () => {
             try {
                 const auth = localStorage.getItem('token');
                 if (auth) {
                     const headers = { headers: { authorization: JSON.parse(auth) } };
                     const { data } = await getHistory(headers);
-                    setData(data);
+                    setData(await getProducts(data));
                     setLoad(true);
                 } else {
                     const logar = confirm('não autorizado. Deseja fazer login?');
@@ -33,8 +44,8 @@ export default function HistoryList() {
                 }
             } catch (e: any) {
                 console.log(e);
-                alert(e.message);
-                navigate('/');
+                toast(e.message);
+                setTimeout(() => navigate('/'), 3000);
             }
         })();
     }, []);
@@ -45,24 +56,25 @@ export default function HistoryList() {
                 {data.length === 0 && <Empty><p>Nenhuma compra foi feita ainda.</p></Empty>}
                 {data.length !== 0 && <Fragment>
                     {data.map((item, index) =>
-                        <ProductBox key={index} onClick={() => { navigate(`/product/${item._id}`) }}>
+                        <ProductBox key={index}>
                             <ImageSection>
-                                <img src={item.productData.image} alt='Fail do charge the image' />
+                                <img src={item.image} alt='Fail do charge the image' />
                             </ImageSection>
                             <ProductInformations>
                                 <RowInformation>
-                                    R$ {item.productData.price}
+                                    R$ {item.price}
                                 </RowInformation>
                                 <RowInformation>
-                                    {item.productData.name}
+                                    {item.name}
                                 </RowInformation>
                                 <RowInformation>
-                                    R$ {item.productData.shipping}
+                                    R$ {item.shipping}
                                 </RowInformation>
                             </ProductInformations>
                         </ProductBox>
                     )}
                 </Fragment>}
+                <ToastContainer />
             </RowSection>
             }
         </Container>

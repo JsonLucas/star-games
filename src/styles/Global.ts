@@ -1,6 +1,9 @@
 import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
+    @import url('https://fonts.googleapis.com/css2?family=Silkscreen&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=DynaPuff&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
     *{
         margin: 0;
         padding: 0;

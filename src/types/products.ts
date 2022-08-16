@@ -9,4 +9,4 @@ export interface IProducts {
     stock: number
 };
 
-export type ProductCartData = Pick<IProducts, '_id' | 'name' | 'price' | 'image'>;
+export type ProductCartData = {quantity: number} & Omit<IProducts, 'categoryId' | 'shipping' | 'stock'>;

@@ -44,6 +44,7 @@ export default function Header() {
                 if (auth) {
                     setLogged(true);
                     if(level){
+                        console.log(JSON.parse(level));
                         setLevelData(JSON.parse(level));
                     }
                 }
@@ -70,7 +71,7 @@ export default function Header() {
                         <RowProgressBar>
                             <ProgressBar completed={levelData.totalScore} 
                             maxCompleted={levelData.totalPoints} width='200px' height="15px" 
-                            bgColor="black" baseBgColor="white" isLabelVisible={false} />
+                            bgColor="grey" baseBgColor="white" isLabelVisible={false} />
                             {levelData.name}
                         </RowProgressBar>
                         <BoxStar>
@@ -118,9 +119,9 @@ export default function Header() {
                     </NavbarLink>
                     <NavbarLink>
                         <Link to='/history'>Histórico</Link>
-                    </NavbarLink>
+                    </NavbarLink>{/*
                     <NavbarLink>
-                        <Link to='/favorites'>Favoritos</Link></NavbarLink>
+                        <Link to='/favorites'>Favoritos</Link></NavbarLink>*/}
                     <NavbarLink>
                         <Link to='/catalogue'>Todos os produtos</Link>
                     </NavbarLink>

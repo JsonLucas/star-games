@@ -42,9 +42,9 @@ export default function Products() {
                 <RowSection>
                     {data.map((item, index) =>
                         <ProductBox key={index} onClick={() => { navigate(`/product/${item._id}`) }}>
-                            <FavoriteIcon>
+                            {/*<FavoriteIcon>
                                 <IoIosHeartEmpty />
-                            </FavoriteIcon>
+                            </FavoriteIcon>*/}
                             <ImageSection>
                                 <img src={item.image} alt='Fail do charge the image' />
                             </ImageSection>

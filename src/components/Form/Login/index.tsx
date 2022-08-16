@@ -55,7 +55,7 @@ export default function FormLogin (){
                     <RowField isButton={true}>
                         <SubmitButton type='submit'>
                             {!loading && <>Entrar</>}
-                            {loading && <ThreeDots height={19} width={40} 
+                            {loading && <ThreeDots height={18} width={40} 
                             wrapperStyle={{display: 'flex', justifyContent: 'center'}} />}
                         </SubmitButton>
                     </RowField>

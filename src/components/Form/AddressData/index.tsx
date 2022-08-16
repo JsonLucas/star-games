@@ -1,20 +1,23 @@
-import { cloneElement, useState } from "react";
+import { cloneElement, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { IoIosArrowBack } from "react-icons/io";
-import { useNavigate } from "react-router-dom";
-import { addAddressData } from "../../../api/services/purchases";
+import { useLocation, useNavigate } from "react-router-dom";
+import { addAddressData, getAddresses } from "../../../api/services/purchases";
 import { getCityByCep } from "../../../api/services/users";
+import Loading from "../../Loading";
 import { BackButton } from "../../SingleProduct/styles";
 import { Container, RowField, SectionPayForm } from "../PayData/styles";
 
 export default function AddressDataForm() {
     const { register, handleSubmit } = useForm();
+    const [effectLoad, setEffectLoad] = useState<boolean>(false);
     const [cep, setCep] = useState<string>('');
     const [city, setCity] = useState<string>('');
     const [state, setState] = useState<string>('');
     const [load, setLoad] = useState<boolean>(false);
     const [loadCep, setLoadCep] = useState<boolean>(false);
     const navigate = useNavigate();
+    const location = useLocation();
     const getCity = async () => {
         setLoadCep(true);
         try {
@@ -29,60 +32,87 @@ export default function AddressDataForm() {
         }
     }
     const addressData = async (data: any) => {
-        const completeData = {...data, cep, city, state};
-        try{
+        const completeData = { ...data, cep, city, state };
+        try {
+            setLoad(true);
             const token = localStorage.getItem('token');
-            if(token){
-                const { data } = await addAddressData(completeData, { headers: { authorization: JSON.parse(token) } });
+            if (token) {
+                await addAddressData(completeData, { headers: { authorization: JSON.parse(token) } });
+                alert('endereço cadastrado.');
+                navigate('/purchase/finish');
             }
-        }catch(e: any){
+        } catch (e: any) {
             console.log(e);
             alert(e.message);
+            navigate('/');
         }
     }
+    useEffect(() => {
+        (async () => {
+            if(location.pathname !== '/profile'){
+                try {
+                    const token = localStorage.getItem('token');
+                    if (token) {
+                        const { data } = await getAddresses({ headers: { authorization: JSON.parse(token) } });
+                        if (data.length > 0) {
+                            navigate('/purchase/finish');
+                        }
+                        setEffectLoad(true);
+                    }
+                } catch (e: any) {
+                    console.log(e);
+                    alert(e.message);
+                    navigate('/');
+                }
+            }else { setEffectLoad(true); }
+        })();
+    }, []);
     return (
         <Container>
-            <SectionPayForm>
-                <form onSubmit={handleSubmit(addressData)}>
-                    <RowField fieldType="cardNumber">
-                        <input type='number' {...register('street')} placeholder='Rua. . .'
-                            disabled={load} />
-                        <RowField fieldType="cvv">
-                            <input type='number' {...register('number')} placeholder='Número'
+            {!effectLoad && <Loading />}
+            {effectLoad &&
+                <SectionPayForm>
+                    <form onSubmit={handleSubmit(addressData)}>
+                        <RowField fieldType="cardNumber">
+                            <input type='text' {...register('street')} placeholder='Rua. . .'
+                                disabled={load} />
+                            <RowField fieldType="cvv">
+                                <input type='number' {...register('number')} placeholder='Número'
+                                    disabled={load} />
+                            </RowField>
+                        </RowField>
+                        <RowField fieldType="cardNumber">
+                            <input type='text' {...register('neighborhood')} placeholder='Bairro. . .'
                                 disabled={load} />
                         </RowField>
-                    </RowField>
-                    <RowField fieldType="cardNumber">
-                        <input type='text' {...register('neighborhood')} placeholder='Bairro. . .'
-                        disabled={load} />
-                    </RowField>
-                    <RowField fieldType="expirationDate">
-                        <RowField fieldType="cvv">
-                            <input type='number' value={cep} 
-                            onChange={({target}) => setCep(target.value)} placeholder='Cep. . .'
-                            disabled={loadCep} onBlur={() => getCity()} />
+                        <RowField fieldType="expirationDate">
+                            <RowField fieldType="cvv">
+                                <input type='number' value={cep}
+                                    onChange={({ target }) => setCep(target.value)} placeholder='Cep. . .'
+                                    disabled={loadCep} onBlur={() => getCity()} />
+                            </RowField>
+                            <RowField fieldType="cvv">
+                                <input type='text' value={city} placeholder='Cidade. . .'
+                                    disabled />
+                            </RowField>
+                            <RowField fieldType="cvv">
+                                <input type='text' value={state} placeholder='Estado. . .'
+                                    disabled />
+                            </RowField>
                         </RowField>
-                        <RowField fieldType="cvv">
-                            <input type='text' value={city} placeholder='Cidade. . .'
-                            disabled />
+                        <RowField fieldType="cardNumber">
+                            <input type='text' {...register('complement')} placeholder='Complemento. . .'
+                                disabled={load} />
                         </RowField>
-                        <RowField fieldType="cvv">
-                            <input type='text' value={state} placeholder='Estado. . .'
-                            disabled />
+                        <RowField fieldType="button">
+                            <button type='submit' disabled={load}>Avançar</button>
                         </RowField>
-                    </RowField>
-                    <RowField fieldType="cardNumber">
-                        <input type='text' {...register('complement')} placeholder='Complemento. . .'
-                        disabled={load} />
-                    </RowField>
-                    <RowField fieldType="button">
-                        <button type='submit' disabled={load}>Avançar</button>
-                    </RowField>
-                </form>
-                <BackButton onClick={() => navigate(-1)}>
-                    <IoIosArrowBack /> Voltar
-                </BackButton>
-            </SectionPayForm>
+                    </form>
+                    <BackButton onClick={() => navigate(-1)}>
+                        <IoIosArrowBack /> Voltar
+                    </BackButton>
+                </SectionPayForm>
+            }
         </Container>
     );
 }

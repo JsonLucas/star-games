@@ -21,10 +21,24 @@ export interface Levels {
 }
 
 export interface Cards {
+    _id?: string,
     name: string,
     number: string,
     cvv: string,
     expirationDate: Date,
+    userId?: number
+}
+
+export interface Address {
+    _id?: string,
+    cep: string,
+    city: string,
+    complement?: string,
+    neighborhood: string,
+    number: number,
+    state: string,
+    street: string,
+    userId?: string
 }
 
 export type Login = { login: string } & Pick<Users, 'password'>;

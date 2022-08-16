@@ -8,6 +8,7 @@ export const Container = styled.header`
     width: 100%;
     height: 100px;
     background-color: black;
+    font-family: 'Silkscreen', cursive;
 `;
 
 export const RowTop = styled.div`

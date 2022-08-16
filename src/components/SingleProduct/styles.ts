@@ -6,6 +6,15 @@ interface IProps {
 
 export const Container = styled.main`
     box-sizing: border-box;
+    width: 100%;
+    height: 82vh;
+    position: absolute;
+    display: flex;
+    font-family: 'Permanent Marker', cursive;
+`;
+
+export const InternalContainer = styled.section`
+    box-sizing: border-box;
     width: 90%;
     margin: 10px auto;
 `;
@@ -34,6 +43,13 @@ export const ProductDataBox = styled.div`
     width: 31%;
     display: flex;
     flex-direction: column;
+    &.qtde-field{
+        width: 50px;
+        input{
+            box-sizing: border-box;
+            width: 100%;
+        }
+    }
 `;
 
 export const RowData = styled.p<IProps>`
@@ -45,14 +61,25 @@ export const RowData = styled.p<IProps>`
     }
 `;
 
+export const PurchaseOptions = styled.div<IProps>`
+    box-sizing: border-box;
+    width: ${({dataType}) => dataType === 'payMethod' ? `270px;` : `200px;`}
+    padding: 5px 0px 5px 0px;
+    display: flex;
+    input{
+        box-sizing: border-box;
+        padding: 3px;
+        border: 1px solid rgba(0, 0, 0, 0.7);
+        width: 100%;
+    }
+`;
+
 export const AddCartSection = styled.div`
     box-sizing: border-box;
-    padding: 5px;
     width: 100%;
-    margin-top: 20px;
+    margin-top: 25px;
     div{
-        margin: auto;
-        width: 90%;
+        width: 100%;
     }
 `;
 
