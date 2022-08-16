@@ -23,7 +23,6 @@ export default function SingleProduct() {
     const [product, setProduct] = useState<IProducts>(Object);
     const [load, setLoad] = useState<boolean>(true);
     const [quantity, setQuantity] = useState<number>(1);
-    const [payMethod, setPayMethod] = useState<string>('');
     const { productId } = useParams();
     const navigate = useNavigate();
     const addToCart = (product: ProductCartData) => {
@@ -36,7 +35,6 @@ export default function SingleProduct() {
                 localStorage.setItem('cart', JSON.stringify([product]));
             }
             toast('produto adicionado com sucesso ao carrinho');
-            localStorage.setItem('payMethod', payMethod);
         } catch (e: any) {
             console.log(e);
             toast('falha ao adicionar produto ao carrinho');
@@ -73,19 +71,10 @@ export default function SingleProduct() {
                         <RowData dataType='price'>R$ {product.price}</RowData>
                         <RowData dataType='shipping'>Frete: R$ {product.shipping}</RowData>
                         <PurchaseOptions>
-                            Quantidade: 
-                            <input type='number' value={quantity} placeholder="Quantidade" 
-                            onChange={({target}) => setQuantity(parseInt(target.value))} />
+                            Quantidade:
+                            <input type='number' value={quantity} placeholder="Quantidade"
+                                onChange={({ target }) => setQuantity(parseInt(target.value))} />
                         </PurchaseOptions>
-                        <PurchaseOptions dataType="payMethod">
-                            Método de pagamento:
-                            <select onChange={({target}) => setPayMethod(target.value)}>
-                                <option value=''>--Selecione--</option>
-                                <option value='card'>Cartão</option>
-                                <option value='fetlock'>Boleto</option>
-                            </select>
-                        </PurchaseOptions>
-                        {payMethod === 'card' && <p>Parcelamento</p>}
                         <AddCartSection>
                             <div>
                                 <ActionButtons value='Adicionar aos favoritos.' type='button'
@@ -96,8 +85,8 @@ export default function SingleProduct() {
                                     onClick={() => {
                                         addToCart({
                                             _id: product._id, name: product.name,
-                                            description: product.description, 
-                                            price: (product.price + product.shipping), 
+                                            description: product.description,
+                                            price: (product.price + product.shipping),
                                             image: product.image, quantity
                                         });
                                     }} />
@@ -105,17 +94,13 @@ export default function SingleProduct() {
                             <div>
                                 <ActionButtons value='Comprar' type='button'
                                     onClick={() => {
-                                        if((payMethod !== '') && ((payMethod === 'card') || (payMethod === 'fetlock'))){
-                                            addToCart({
-                                                _id: product._id, name: product.name,
-                                                description: product.description, 
-                                                price: (product.price + product.shipping), 
-                                                image: product.image, quantity
-                                            });
-                                            navigate('/purchase/payment');
-                                        }else{
-                                            toast('escolha um método de pagamento');
-                                        }
+                                        addToCart({
+                                            _id: product._id, name: product.name,
+                                            description: product.description,
+                                            price: (product.price + product.shipping),
+                                            image: product.image, quantity
+                                        });
+                                        navigate('/purchase/address');
                                     }} />
                             </div>
                         </AddCartSection>

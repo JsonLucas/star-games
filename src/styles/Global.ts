@@ -11,7 +11,6 @@ const GlobalStyle = createGlobalStyle`
     }
     a:active, a:visited, a:link{
         text-decoration: none;
-        color: red;
     }
     .active-field: {
         outline-style: solid;

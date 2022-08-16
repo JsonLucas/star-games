@@ -75,9 +75,11 @@ export const NavbarLink = styled.p`
     display: flex;
     align-items: center;
     color: red;
-    &:hover{
-        cursor: pointer;
-        color: green;
+    a{
+        &:hover{
+            cursor: pointer;
+            color: darkred;
+        }
     }
 `;
 

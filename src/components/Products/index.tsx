@@ -56,7 +56,7 @@ export default function Products() {
                                     {item.name}
                                 </RowInformation>
                                 <RowInformation>
-                                    R$ {item.shipping}
+                                    Frete: R$ {item.shipping}
                                 </RowInformation>
                             </ProductInformations>
                         </ProductBox>

@@ -29,6 +29,7 @@ import dayjs from 'dayjs';
 
 export default function ReviewPurchaseData() {
     const [load, setLoad] = useState<boolean>(false);
+    const [loadCard, setLoadCard] = useState<boolean>(false);
     const [cards, setCards] = useState<Array<Cards>>([]);
     const [addresses, setAddresses] = useState<Array<Address>>([]);
     const [cart, setCart] = useState<Array<ProductCartData>>([]);
@@ -86,18 +87,12 @@ export default function ReviewPurchaseData() {
             try {
                 const cartData = localStorage.getItem('cart');
                 const token = localStorage.getItem('token');
-                const payMethod = localStorage.getItem('payMethod');
-                if ((cartData) && (payMethod)) {
-                    setPayMethod(payMethod);
+                if (cartData) {
                     const cart = JSON.parse(cartData);
                     setCart(cart);
                     setScorePoints(calculatePoints(cart));
                     if (token) {
                         const headers = { headers: { authorization: JSON.parse(token) } };
-                        if (payMethod === 'card') {
-                            const cards = await getPayMethod(headers);
-                            setCards(cards.data);
-                        }
                         const addresses = await getAddresses(headers);
                         setAddresses(addresses.data);
                         setLoad(true);
@@ -113,12 +108,28 @@ export default function ReviewPurchaseData() {
         })();
     }, []);
     useEffect(() => {
-        if(payMethod === 'card'){
-            if((selectAddress !== '') && (selectCard !== '')){
+        (async () => {
+            const token = localStorage.getItem('token');
+            try{
+                if(token){
+                    const headers = { headers: { authorization: JSON.parse(token) } };
+                    const cards = await getPayMethod(headers);
+                    setCards(cards.data);
+                    setLoadCard(true);
+                }
+            }catch(e: any){
+                console.log(e);
+                toast(e.message);
+            }
+        })();
+    }, [payMethod]);
+    useEffect(() => {
+        if (payMethod === 'card') {
+            if ((selectAddress !== '') && (selectCard !== '')) {
                 setDisabled(false);
             }
-        }else{
-            if(selectAddress !== ''){
+        } else {
+            if (selectAddress !== '') {
                 setDisabled(false);
             }
         }
@@ -129,26 +140,37 @@ export default function ReviewPurchaseData() {
             {load && <Fragment>
                 <InternalContainer>
                     <SectionUserData>
-                        {payMethod === 'fetlock' && <UserPaymentData>
+                        <div>
                             <p>Dados de pagamento</p>
+                            Selecione o método: <select onChange={({ target }) => setPayMethod(target.value)}>
+                                <option value=''>--Selecione--</option>
+                                <option value='card'>Cartão</option>
+                                <option value='fetlock'>Boleto</option>
+                            </select>
+                        </div>
+                        {payMethod === 'fetlock' && <UserPaymentData>
                             Código de barras do boleto:
                             {`${faker.finance.creditCardNumber()}${faker.finance.creditCardNumber()}`}
                         </UserPaymentData>}
                         {payMethod === 'card' &&
-                            <UserPaymentData elements={cards.length}>
-                                <p>Dados de pagamento</p>
-                                {cards.map((item, index) =>
-                                    <RowPaymentData key={index}>
-                                        <input type='radio' value={item._id}
-                                            onChange={({ target }) => setSelectCard(target.value)} />
-                                        <WrapperPaymentData>
-                                            <RowData>nome: <span>{item.name}</span></RowData>
-                                            <RowData>número: <span>{item.number}</span></RowData>
-                                            <RowData>cvv: <span>{item.cvv}</span></RowData>
-                                            <RowData>validade: <span>{formatDate(item.expirationDate)}</span></RowData>
-                                        </WrapperPaymentData>
-                                    </RowPaymentData>)}
-                            </UserPaymentData>
+                            <Fragment>
+                                {!loadCard && <ThreeDots />}
+                                {loadCard &&
+                                    <UserPaymentData elements={cards.length}>
+                                        {cards.map((item, index) =>
+                                            <RowPaymentData key={index}>
+                                                <input type='radio' value={item._id}
+                                                    onChange={({ target }) => setSelectCard(target.value)} />
+                                                <WrapperPaymentData>
+                                                    <RowData>nome: <span>{item.name}</span></RowData>
+                                                    <RowData>número: <span>{item.number}</span></RowData>
+                                                    <RowData>cvv: <span>{item.cvv}</span></RowData>
+                                                    <RowData>validade: <span>{formatDate(item.expirationDate)}</span></RowData>
+                                                </WrapperPaymentData>
+                                            </RowPaymentData>)}
+                                    </UserPaymentData>
+                                }
+                            </Fragment>
                         }
                         <UserAddressData elements={addresses.length}>
                             <p>Dados de endereço de entrega</p>
