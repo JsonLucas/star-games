@@ -44,7 +44,6 @@ export default function Header() {
                 if (auth) {
                     setLogged(true);
                     if(level){
-                        console.log(JSON.parse(level));
                         setLevelData(JSON.parse(level));
                     }
                 }
@@ -66,7 +65,7 @@ export default function Header() {
                     <RowUserProgress>
                         <BoxStar>
                             <IoIosStar color="yellow" />
-                            <p>{levelData.levelNumber}</p>
+                            <p>{levelData.id}</p>
                         </BoxStar>
                         <RowProgressBar>
                             <ProgressBar completed={levelData.totalScore} 
@@ -76,7 +75,7 @@ export default function Header() {
                         </RowProgressBar>
                         <BoxStar>
                             <IoIosStar color="yellow" />
-                            <p>{levelData.levelNumber + 1}</p>
+                            <p>{levelData.id + 1}</p>
                         </BoxStar>
                     </RowUserProgress>
                 )}

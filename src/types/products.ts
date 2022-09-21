@@ -1,12 +1,14 @@
 export interface IProducts {
-    _id: string,
-    categoryId: string,
-    image: string,
+    id: number
     name: string,
     description: string,
     price: number,
     shipping: number,
-    stock: number
+    categoryId: number,
+    stock: number,
+    image: string,
+    createdAt?: Date
+	updatedAt?: Date
 };
 
 export type ProductCartData = {quantity: number} & Omit<IProducts, 'categoryId' | 'shipping' | 'stock'>;

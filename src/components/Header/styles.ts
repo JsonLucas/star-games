@@ -33,7 +33,7 @@ export const BoxField = styled.div<IProps>`
     ${({isFocused}) => isFocused ? `
     outline-style: solid;
     outline-width: 3px;
-    outline-color: green;
+    outline-color: blue;
     ` 
     : ``}
 `;

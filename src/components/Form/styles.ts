@@ -21,7 +21,7 @@ export const CardForm = styled.form<IProps>`
     box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.5);
     ${({signUpCard}) => signUpCard ? 'padding-top: 10px; padding-bottom: 10px;' : 'height: 350px;' }
     width: 350px;
-    background-color: aqua;
+    background-color: darkblue;
     position: relative;
 `;
 

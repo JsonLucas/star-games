@@ -1,8 +1,8 @@
 import { IProducts } from "./products";
 
 export interface IPurchases {
-    _id: string,
-    userId: String,
+    id: number,
+    userId: number,
     productData: IProducts,
     createdAt: Date,
     status: String

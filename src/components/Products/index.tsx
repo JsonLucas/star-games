@@ -25,7 +25,7 @@ export default function Products() {
                 const { data } = await getProducts();
                 if(location.pathname === '/'){
                     const formatData = data.sort((a: any, b: any) => { return a-b; });
-                    setData(formatData.slice(0, 5));
+                    setData(formatData);
                 }else{
                     setData(data);
                 }
@@ -41,10 +41,10 @@ export default function Products() {
             {!load &&
                 <RowSection>
                     {data.map((item, index) =>
-                        <ProductBox key={index} onClick={() => { navigate(`/product/${item._id}`) }}>
-                            {/*<FavoriteIcon>
+                        <ProductBox key={index} onClick={() => { navigate(`/product/${item.id}`) }}>
+                            <FavoriteIcon>
                                 <IoIosHeartEmpty />
-                            </FavoriteIcon>*/}
+                            </FavoriteIcon>
                             <ImageSection>
                                 <img src={item.image} alt='Fail do charge the image' />
                             </ImageSection>

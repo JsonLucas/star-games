@@ -1,5 +1,5 @@
 export interface Users {
-    _id?: string,
+    id?: number,
     name: string
     nickname?: string
     cpf: string
@@ -10,18 +10,18 @@ export interface Users {
 };
 
 export interface Levels {
+	id: number,
     name: string,
-    levelNumber: number,
     totalPoints: number,
     totalScore: number,
     features: {
         discount: number,
-        shipping: boolean
+        hasFreeShipping: boolean
     }
 }
 
 export interface Cards {
-    _id?: string,
+    id?: number,
     name: string,
     number: string,
     cvv: string,
@@ -30,7 +30,7 @@ export interface Cards {
 }
 
 export interface Address {
-    _id?: string,
+    id?: number,
     cep: string,
     city: string,
     complement?: string,
@@ -38,7 +38,7 @@ export interface Address {
     number: number,
     state: string,
     street: string,
-    userId?: string
+    userId?: number
 }
 
 export type Login = { login: string } & Pick<Users, 'password'>;
