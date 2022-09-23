@@ -20,6 +20,7 @@ export const SectionPayForm = styled.section`
     width: 500px;
     height: 400px;
     background-color: black;
+	border-radius: 5px;
     position: relative;
 `;
 

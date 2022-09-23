@@ -13,15 +13,28 @@ import {
     RowSection 
 } from "./styles";
 import Loading from "../Loading";
+import { toast } from "react-toastify";
+
+interface Features {
+	hasFreeShipping: boolean,
+	shippingDiscount: number,
+	discount: number
+}
 
 export default function Products() {
     const [data, setData] = useState<Array<IProducts>>([]);
     const [load, setLoad] = useState<boolean>(true);
+	const [ features, setFeatures ] = useState<Features | undefined>();
     const location = useLocation();
     const navigate = useNavigate();
     useEffect(() => {
         (async () => {
             try {
+				const jsonLevel = localStorage.getItem('level');
+				if(jsonLevel){
+					const { features } = JSON.parse(jsonLevel);
+					setFeatures(JSON.parse(features));
+				}
                 const { data } = await getProducts();
                 if(location.pathname === '/'){
                     const formatData = data.sort((a: any, b: any) => { return a-b; });
@@ -32,6 +45,7 @@ export default function Products() {
                 setLoad(false);
             } catch (e: any) {
                 console.log(e);
+				toast(e.message);
             }
         })();
     }, []);
@@ -50,13 +64,27 @@ export default function Products() {
                             </ImageSection>
                             <ProductInformations>
                                 <RowInformation>
-                                    R$ {item.price}
+									{features &&
+									<>
+										{features.discount > 0 && <>R$ {item.price * features.discount}</>}
+										{features.discount === 0 && <>R$ {item.price}</>}
+									</>}
+									{!features && <>R$ {item.price}</>}
                                 </RowInformation>
                                 <RowInformation>
                                     {item.name}
                                 </RowInformation>
                                 <RowInformation>
-                                    Frete: R$ {item.shipping}
+									{features && 
+									<>
+										{features.hasFreeShipping && <>Frete: <b>Grátis</b></> }
+										{!features.hasFreeShipping && 
+										<>
+											{features.shippingDiscount !== 0 && <>Frete: R$ {item.shipping * features.shippingDiscount}</> }
+											{features.shippingDiscount === 0 && <>Frete: R$ {item.shipping}</> }
+										</> }
+									</>}
+									{!features && <>Frete: R$ {item.shipping}</>}
                                 </RowInformation>
                             </ProductInformations>
                         </ProductBox>

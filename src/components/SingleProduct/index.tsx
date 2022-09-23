@@ -84,7 +84,7 @@ export default function SingleProduct() {
                                 <ActionButtons value='Adicionar ao carrinho.' type='button'
                                     onClick={() => {
                                         addToCart({
-                                            _id: product._id, name: product.name,
+                                            id: product.id, name: product.name,
                                             description: product.description,
                                             price: (product.price + product.shipping),
                                             image: product.image, quantity
@@ -95,7 +95,7 @@ export default function SingleProduct() {
                                 <ActionButtons value='Comprar' type='button'
                                     onClick={() => {
                                         addToCart({
-                                            _id: product._id, name: product.name,
+                                            id: product.id, name: product.name,
                                             description: product.description,
                                             price: (product.price + product.shipping),
                                             image: product.image, quantity

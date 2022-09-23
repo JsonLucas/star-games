@@ -9,10 +9,12 @@ import Payment from "./pages/Payment";
 import Address from "./pages/Address";
 import Finish from "./pages/Finish";
 import Profile from "./pages/Profile";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
     <BrowserRouter>
+	  <ToastContainer />
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<Login />} />

@@ -50,6 +50,12 @@ export const RowInformation = styled.p`
     box-sizing: border-box;
     font-size: 17px;
     font-weight: bold;
+	span{
+		text-decoration: line-through;
+	}
+	b{
+		color: darkgreen;
+	}
 `;
 
 export const FavoriteIcon = styled.p`

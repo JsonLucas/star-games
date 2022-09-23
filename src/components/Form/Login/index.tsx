@@ -14,6 +14,7 @@ import { ThreeDots } from "react-loader-spinner";
 import { loginRequest } from "../../../api/services/users";
 import { Link, useNavigate } from "react-router-dom";
 import { IoIosAt, IoIosLock, IoIosArrowDropleftCircle } from 'react-icons/io';
+import { toast } from "react-toastify";
 
 export default function FormLogin (){
     const [loading, setLoading] = useState<boolean>(false);
@@ -27,11 +28,11 @@ export default function FormLogin (){
             const { data } = await loginRequest(login);
             alert(`bem vindo ${login.login}`);
             localStorage.setItem('token', JSON.stringify(data.token));
-            localStorage.setItem('levelData', JSON.stringify(data.levelData));
+            localStorage.setItem('level', JSON.stringify(data.level));
             navigate('/');
         }catch(e: any){
             console.log(e);
-            alert(e.message);
+            toast(e.message);
         }
     }
     return (

@@ -20,6 +20,7 @@ import { Levels } from "../../types/users";
 import { IoIosSearch, IoIosLogIn, IoIosLogOut, IoIosStar, IoIosCart } from "react-icons/io";
 import ProgressBar from "@ramonak/react-progress-bar";
 import ModalCart from "../Modals/ModalCart";
+import { toast } from "react-toastify";
 
 export default function Header() {
     const [focus, setFocus] = useState<boolean>(false);
@@ -29,27 +30,28 @@ export default function Header() {
     const logout = () => {
         try{
             localStorage.removeItem('token');
-            localStorage.removeItem('levelData');
+            localStorage.removeItem('level');
             window.location.reload();
         }catch(e: any){
             console.log(e);
-            alert(e.message);
+            toast(e.message);
         }
     }
     useEffect(() => {
         (async () => {
             try {
                 const auth = localStorage.getItem("token");
-                const level = localStorage.getItem('levelData');
+                const level = localStorage.getItem('level');
                 if (auth) {
                     setLogged(true);
                     if(level){
-                        setLevelData(JSON.parse(level));
+						const parsedData = JSON.parse(level);
+                        setLevelData(parsedData);
                     }
                 }
             } catch (e: any) {
                 console.log(e);
-                alert(e.message);
+                toast(e.message);
             }
         })();
     }, []);

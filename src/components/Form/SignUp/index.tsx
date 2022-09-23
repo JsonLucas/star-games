@@ -23,6 +23,7 @@ import {
 import { useForm } from "react-hook-form";
 import { ThreeDots } from "react-loader-spinner";
 import { signUpRequest } from "../../../api/services/users";
+import { toast } from "react-toastify";
 
 export default function FormSignUp() {
     const [disabled, setDisabled] = useState<boolean>(false);
@@ -35,11 +36,12 @@ export default function FormSignUp() {
             setLoading(true);
             const { data } = await signUpRequest(userData);
             localStorage.setItem('token', JSON.stringify(data.token));
+			localStorage.setItem('level', JSON.stringify(data.level));
             alert('conta criada com sucesso!');
             navigate('/');
         }catch(e: any){
             console.log(e);
-            alert(e.message);
+            toast(e.message);
         }
     }
     return (
@@ -74,13 +76,13 @@ export default function FormSignUp() {
                         <Field placeholder='* Cpf. . .' type='text' disabled={disabled} 
                         {...register('cpf')} required />
                     </RowField>
-                    <RowField>
+                    {/* {<RowField>
                         <BoxFieldIcon>
                             <IoIosPhonePortrait />
                         </BoxFieldIcon>
                         <Field placeholder='Telefone. . .' type='tel' maxLength={11} 
                         disabled={disabled} {...register('phone')} />
-                    </RowField>
+                    </RowField>} */}
                     <RowField>
                         <BoxFieldIcon>
                             <IoIosLock />

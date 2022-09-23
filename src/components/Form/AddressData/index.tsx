@@ -2,6 +2,7 @@ import { cloneElement, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { IoIosArrowBack } from "react-icons/io";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { addAddressData, getAddresses } from "../../../api/services/purchases";
 import { getCityByCep } from "../../../api/services/users";
 import Loading from "../../Loading";
@@ -28,7 +29,7 @@ export default function AddressDataForm() {
             setLoadCep(false);
         } catch (e: any) {
             console.log(e);
-            alert(e.message);
+            toast(e.message);
         }
     }
     const addressData = async (data: any) => {
@@ -43,7 +44,7 @@ export default function AddressDataForm() {
             }
         } catch (e: any) {
             console.log(e);
-            alert(e.message);
+            toast(e.message);
             navigate('/');
         }
     }
@@ -61,7 +62,7 @@ export default function AddressDataForm() {
                     }
                 } catch (e: any) {
                     console.log(e);
-                    alert(e.message);
+                    toast(e.message);
                     navigate('/');
                 }
             }else { setEffectLoad(true); }
@@ -73,34 +74,34 @@ export default function AddressDataForm() {
             {effectLoad &&
                 <SectionPayForm>
                     <form onSubmit={handleSubmit(addressData)}>
-                        <RowField fieldType="cardNumber">
+                        <RowField>
                             <input type='text' {...register('street')} placeholder='Rua. . .'
                                 disabled={load} />
-                            <RowField fieldType="cvv">
+                            <RowField fieldType="number">
                                 <input type='number' {...register('number')} placeholder='Número'
                                     disabled={load} />
                             </RowField>
                         </RowField>
-                        <RowField fieldType="cardNumber">
+                        <RowField>
                             <input type='text' {...register('neighborhood')} placeholder='Bairro. . .'
                                 disabled={load} />
                         </RowField>
-                        <RowField fieldType="expirationDate">
+                        <RowField>
                             <RowField fieldType="cvv">
-                                <input type='number' value={cep}
+                                <input type='number' value={cep} min={0}
                                     onChange={({ target }) => setCep(target.value)} placeholder='Cep. . .'
                                     disabled={loadCep} onBlur={() => getCity()} />
                             </RowField>
-                            <RowField fieldType="cvv">
+                            <RowField>
                                 <input type='text' value={city} placeholder='Cidade. . .'
                                     disabled />
                             </RowField>
-                            <RowField fieldType="cvv">
+                            <RowField>
                                 <input type='text' value={state} placeholder='Estado. . .'
                                     disabled />
                             </RowField>
                         </RowField>
-                        <RowField fieldType="cardNumber">
+                        <RowField>
                             <input type='text' {...register('complement')} placeholder='Complemento. . .'
                                 disabled={load} />
                         </RowField>
