@@ -46,7 +46,7 @@ export default function PayDataForm() {
                 alert(e.message);
                 navigate(-1);
             }
-        })(); //verifica se tem algum cartão cadastrado
+        })();
     }, []);
     return (
         <Container>

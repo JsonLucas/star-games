@@ -45,7 +45,7 @@ export default function ReviewPurchaseData() {
     const formatCartInformation = (data: Array<ProductCartData>) => {
         let ids = [];
         for (let i = 0; i < data.length; i++) {
-            ids.push({ productId: data[i]._id, quantity: data[i].quantity });
+            ids.push({ productId: data[i].id, quantity: data[i].quantity });
         }
         return ids;
     }
@@ -159,7 +159,7 @@ export default function ReviewPurchaseData() {
                                     <UserPaymentData elements={cards.length}>
                                         {cards.map((item, index) =>
                                             <RowPaymentData key={index}>
-                                                <input type='radio' value={item._id}
+                                                <input type='radio' value={item.id}
                                                     onChange={({ target }) => setSelectCard(target.value)} />
                                                 <WrapperPaymentData>
                                                     <RowData>nome: <span>{item.name}</span></RowData>
@@ -176,7 +176,7 @@ export default function ReviewPurchaseData() {
                             <p>Dados de endereço de entrega</p>
                             {addresses.map((item, index) =>
                                 <RowPaymentData key={index}>
-                                    <input type='radio' value={item._id}
+                                    <input type='radio' value={item.id}
                                         onChange={({ target }) => setSelectAddress(target.value)} />
                                     <WrapperPaymentData>
                                         <RowData>

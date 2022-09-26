@@ -74,11 +74,11 @@ export default function AddressDataForm() {
             {effectLoad &&
                 <SectionPayForm>
                     <form onSubmit={handleSubmit(addressData)}>
-                        <RowField>
+                        <RowField fieldType="street">
                             <input type='text' {...register('street')} placeholder='Rua. . .'
                                 disabled={load} />
                             <RowField fieldType="number">
-                                <input type='number' {...register('number')} placeholder='Número'
+                                <input type='number' {...register('number')} min='0' placeholder='Número'
                                     disabled={load} />
                             </RowField>
                         </RowField>
@@ -101,7 +101,7 @@ export default function AddressDataForm() {
                                     disabled />
                             </RowField>
                         </RowField>
-                        <RowField>
+                        <RowField fieldType="complement">
                             <input type='text' {...register('complement')} placeholder='Complemento. . .'
                                 disabled={load} />
                         </RowField>

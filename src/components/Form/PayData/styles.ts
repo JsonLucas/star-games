@@ -38,6 +38,12 @@ export const RowField = styled.div<Props>`
         padding: 10px;
         width: 100%;
         border: none;
+		${({fieldType}) => fieldType === 'name' 
+		? 'border-radius: 5px 5px 0px 0px;' 
+		: `${fieldType === 'expirationDate' ? 'border-radius: 0px 0px 5px 5px;' : ''}`}
+		&:focus{
+			outline: none;
+		}
     }
     button{
         border: none;
