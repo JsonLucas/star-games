@@ -11,4 +11,4 @@ export interface IProducts {
 	updatedAt?: Date
 };
 
-export type ProductCartData = {quantity: number} & Omit<IProducts, 'categoryId' | 'shipping' | 'stock'>;
+export type ProductCartData = {quantity: number, updatedStock: number} & Omit<IProducts, 'categoryId' | 'shipping' | 'stock'>;

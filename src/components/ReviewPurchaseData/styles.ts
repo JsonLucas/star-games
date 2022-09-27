@@ -146,6 +146,10 @@ export const RowActionButtons = styled.div`
     button, input{
         border: 1px solid rgba(0,0,0,0.4);
         padding: 6px;
+		cursor: pointer;
+		&:hover{
+			background-color: lightgreen;
+		}
     }
 `;
 

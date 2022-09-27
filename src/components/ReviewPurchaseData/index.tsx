@@ -45,7 +45,7 @@ export default function ReviewPurchaseData() {
     const formatCartInformation = (data: Array<ProductCartData>) => {
         let ids = [];
         for (let i = 0; i < data.length; i++) {
-            ids.push({ productId: data[i].id, quantity: data[i].quantity });
+            ids.push({ productId: data[i].id, stock: (data[i].updatedStock - data[i].quantity) });
         }
         return ids;
     }
@@ -64,14 +64,14 @@ export default function ReviewPurchaseData() {
                 if ((selectCard !== '') || (selectAddress !== '')) {
                     setLoad(false);
                     await purchase(body, { headers: { authorization: JSON.parse(token) } });
-                    alert('compra concluída com sucesso.');
-                    localStorage.removeItem('cart');
-                    navigate('/');
+                    toast('compra concluída com sucesso.');
+                    //localStorage.removeItem('cart');
+                    //navigate('/');
                 } else { toast('Selecione uma das opções de cartão e endereço'); }
             }
         } catch (e: any) {
             console.log(e);
-            alert(e.message);
+            toast(e.message);
             navigate('/');
         }
     }

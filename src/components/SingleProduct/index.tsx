@@ -72,7 +72,7 @@ export default function SingleProduct() {
                         <RowData dataType='shipping'>Frete: R$ {product.shipping}</RowData>
                         <PurchaseOptions>
                             Quantidade:
-                            <input type='number' value={quantity} placeholder="Quantidade"
+                            <input type='number' min='1' max={product.stock} value={quantity} placeholder="Quantidade"
                                 onChange={({ target }) => setQuantity(parseInt(target.value))} />
                         </PurchaseOptions>
                         <AddCartSection>
@@ -87,7 +87,8 @@ export default function SingleProduct() {
                                             id: product.id, name: product.name,
                                             description: product.description,
                                             price: (product.price + product.shipping),
-                                            image: product.image, quantity
+                                            image: product.image, updatedStock: (product.stock - quantity),
+											quantity
                                         });
                                     }} />
                             </div>
@@ -98,7 +99,7 @@ export default function SingleProduct() {
                                             id: product.id, name: product.name,
                                             description: product.description,
                                             price: (product.price + product.shipping),
-                                            image: product.image, quantity
+                                            image: product.image, quantity, updatedStock: (product.stock - quantity)
                                         });
                                         navigate('/purchase/address');
                                     }} />
