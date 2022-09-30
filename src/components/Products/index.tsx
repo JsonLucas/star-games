@@ -66,7 +66,7 @@ export default function Products() {
                                 <RowInformation>
 									{features &&
 									<>
-										{features.discount > 0 && <>R$ {item.price * features.discount}</>}
+										{features.discount > 0 && <>R$ {(item.price - (item.price * features.discount))}</>}
 										{features.discount === 0 && <>R$ {item.price}</>}
 									</>}
 									{!features && <>R$ {item.price}</>}
@@ -80,7 +80,7 @@ export default function Products() {
 										{features.hasFreeShipping && <>Frete: <b>Grátis</b></> }
 										{!features.hasFreeShipping && 
 										<>
-											{features.shippingDiscount !== 0 && <>Frete: R$ {item.shipping * features.shippingDiscount}</> }
+											{features.shippingDiscount !== 0 && <>Frete: R$ {(item.shipping - (item.shipping * features.shippingDiscount))}</> }
 											{features.shippingDiscount === 0 && <>Frete: R$ {item.shipping}</> }
 										</> }
 									</>}

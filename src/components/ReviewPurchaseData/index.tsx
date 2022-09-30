@@ -74,6 +74,7 @@ export default function ReviewPurchaseData() {
             toast(e.message);
             navigate('/');
         }
+		setLoad(true);
     }
     useEffect(() => {
         function calculatePoints(prices: Array<ProductCartData>) {
