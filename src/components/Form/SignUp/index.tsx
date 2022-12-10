@@ -8,7 +8,7 @@ import {
     SubmitButton,
     WrapperFields
 } from "../styles";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
     IoIosAt,
@@ -23,26 +23,34 @@ import {
 import { useForm } from "react-hook-form";
 import { ThreeDots } from "react-loader-spinner";
 import { signUpRequest } from "../../../api/services/users";
-import { toast } from "react-toastify";
+import { useLocalStorage } from "../../../hooks/useLocalStorage";
+import { useToast } from "../../../hooks/useToast";
+import { UserContext } from "../../../contexts/user";
 
 export default function FormSignUp() {
+	const { setAuth } = useLocalStorage();
+	const { genericToast } = useToast();
+	const { setIsLogged } = useContext(UserContext);
     const [disabled, setDisabled] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const { register, handleSubmit } = useForm();
     const navigate = useNavigate();
     const signUp = async (userData: any) => {
+		setDisabled(true);
+		setLoading(true);
         try{
-            setDisabled(true);
-            setLoading(true);
-            const { data } = await signUpRequest(userData);
-            localStorage.setItem('token', JSON.stringify(data.token));
-			localStorage.setItem('level', JSON.stringify(data.level));
-            alert('conta criada com sucesso!');
+            const response = await signUpRequest(userData);
+			const { data } = response;
+			setAuth({ accessToken: data.accessToken, refreshToken: data.refreshToken });
+			setIsLogged(true);
+            genericToast({ message: 'conta criada com sucesso!', type: 'success' });
             navigate('/');
         }catch(e: any){
             console.log(e);
-            toast(e.message);
+			genericToast({ message: e.message, type: 'error' });
         }
+		setDisabled(false);
+		setLoading(false);
     }
     return (
         <Container>

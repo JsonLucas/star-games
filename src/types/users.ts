@@ -1,12 +1,16 @@
 export interface Users {
-    id?: number,
-    name: string
-    nickname?: string
-    cpf: string
-    email: string
-    password: string
-    confirmPassword: string
-    phone?: string
+	id: number,
+	name: string,
+	nickname?: string,
+	cpf: string,
+	email: string,
+	password: string,
+	phone?: string,
+	totalScore: number,
+	currentLevelPoints: number,
+	levelId: number,
+	createdAt: Date,
+	updatedAt: Date
 };
 
 export interface Levels {
@@ -42,4 +46,4 @@ export interface Address {
 }
 
 export type Login = { login: string } & Pick<Users, 'password'>;
-export type SignUp = Omit<Users, 'id'>;
+export type SignUp = Users & { confirmPassword: string };

@@ -25,7 +25,7 @@ export default function FormLogin (){
         try{
             setLoading(true);
             setDisabled(true);
-            const { data } = await loginRequest(login);
+            const data = await loginRequest(login);
             alert(`bem vindo ${login.login}`);
             localStorage.setItem('token', JSON.stringify(data.token));
             localStorage.setItem('level', JSON.stringify(data.level));

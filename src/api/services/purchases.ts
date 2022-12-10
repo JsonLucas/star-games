@@ -6,7 +6,8 @@ export const purchase = async (body: any, headers: any) => {
 }
 
 export const getHistory = async (headers: any) => {
-    return await axiosInstance.get('/purchases', headers);
+    const { data } = await axiosInstance.get('/purchases', headers);
+	return data;
 }
 
 export const addPayMethodData = async (body: any, headers: any) => {
@@ -14,11 +15,13 @@ export const addPayMethodData = async (body: any, headers: any) => {
 }
 
 export const getPayMethod = async (headers: any) => {
-    return await axiosInstance.get<Array<Cards>>('/purchases/payment', headers);
+    const { data } = await axiosInstance.get<Array<Cards>>('/purchases/payment', headers);
+	return data;
 }
 
 export const getAddresses = async (headers: any) => {
-    return await axiosInstance.get<Array<Address>>('/purchases/address', headers);
+    const { data } = await axiosInstance.get<Array<Address>>('/purchases/address', headers);
+	return data;
 }
 
 export const addAddressData = async (body: any, headers: any) => {

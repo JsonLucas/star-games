@@ -30,32 +30,6 @@ export default function ProfileData() {
     const formatDate = (date: Date) => {
         return dayjs(date).format('MM-YY');
     }
-    useEffect(() => {
-        (async () => {
-            try {
-
-                (async () => {
-                    try {
-                        const token = localStorage.getItem('token');
-                        if (token) {
-                            const headers = { headers: { authorization: JSON.parse(token) } };
-                            const cards = await getPayMethod(headers);
-                            const addresses = await getAddresses(headers);
-                            setCards(cards.data);
-                            setAddresses(addresses.data);
-                            setLoad(true);
-                        }
-                    } catch (e: any) {
-                        console.log(e);
-                        toast(e.message);
-                    }
-                })();
-            } catch (e: any) {
-                console.log(e);
-                alert(e.message);
-            }
-        })();
-    }, []);
     return (
         <Container>
             <InternalContainer>

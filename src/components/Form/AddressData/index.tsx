@@ -54,7 +54,7 @@ export default function AddressDataForm() {
                 try {
                     const token = localStorage.getItem('token');
                     if (token) {
-                        const { data } = await getAddresses({ headers: { authorization: JSON.parse(token) } });
+                        const data = await getAddresses({ headers: { authorization: JSON.parse(token) } });
                         if (data.length > 0) {
                             navigate('/purchase/finish');
                         }
