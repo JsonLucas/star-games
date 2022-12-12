@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useContext, useState } from "react";
 import {
     BoxCart,
     BoxField,
@@ -16,54 +16,42 @@ import {
     UserWelcome,
 } from "./styles";
 import { Link } from "react-router-dom";
-import { Levels } from "../../types/users";
 import { IoIosSearch, IoIosLogIn, IoIosLogOut, IoIosStar, IoIosCart } from "react-icons/io";
 import ProgressBar from "@ramonak/react-progress-bar";
 import ModalCart from "../Modals/ModalCart";
-import { toast } from "react-toastify";
+import { UserLevel } from "../../types/levels";
+import { UserContext } from "../../contexts/user";
+import { useLocalStorage } from "../../hooks/useLocalStorage";
+import { useToast } from "../../hooks/useToast";
 
-export default function Header() {
+interface Props{
+	levelData?: UserLevel
+}
+
+export default function Header({ levelData }: Props) {
     const [focus, setFocus] = useState<boolean>(false);
-    const [logged, setLogged] = useState<boolean>(false);
-    const [levelData, setLevelData] = useState<Levels>(Object);
+	const { isLogged } = useContext(UserContext);
+	const { removeAuth } = useLocalStorage();
+	const { genericToast } = useToast();
     const [open, setOpen] = useState<boolean>(false);
     const logout = () => {
         try{
-            localStorage.removeItem('token');
-            localStorage.removeItem('level');
+			removeAuth();
             window.location.reload();
         }catch(e: any){
             console.log(e);
-            toast(e.message);
+            genericToast({message: e.message, type: 'error'});
         }
     }
-    useEffect(() => {
-        (async () => {
-            try {
-                const auth = localStorage.getItem("token");
-                const level = localStorage.getItem('level');
-                if (auth) {
-                    setLogged(true);
-                    if(level){
-						const parsedData = JSON.parse(level);
-                        setLevelData(parsedData);
-                    }
-                }
-            } catch (e: any) {
-                console.log(e);
-                toast(e.message);
-            }
-        })();
-    }, []);
     return (
         <Container>
             <RowTop>
-                {!logged && (
+                {!isLogged && (
                     <UserWelcome>
                         Ainda não tem uma conta? <Link to='/sign-up'><span>Cadastre-se!</span></Link>
                     </UserWelcome>
                 )}
-                {logged && (
+                {isLogged && levelData && (
                     <RowUserProgress>
                         <BoxStar>
                             <IoIosStar color="yellow" />
@@ -96,13 +84,13 @@ export default function Header() {
                     <IoIosSearch size={25} color="black" />
                 </BoxField>
                 <SignUser>
-                    {logged && <Fragment>
+                    {isLogged && <Fragment>
                         <SignUserButtons onClick={logout}>Sair</SignUserButtons>
                         <SignUserButtons>
                             <IoIosLogOut size={21} color="white" />
                         </SignUserButtons>
                     </Fragment>
-                    }{!logged && <Fragment>
+                    }{!isLogged && <Fragment>
                         <Link to="/login">
                             <SignUserButtons>Entrar</SignUserButtons>
                         </Link>
@@ -126,7 +114,7 @@ export default function Header() {
                     <NavbarLink>
                         <Link to='/catalogue'>Todos os produtos</Link>
                     </NavbarLink>
-                    {logged && <NavbarLink>
+                    {isLogged && <NavbarLink>
                         <Link to='/profile'>Minha conta</Link>
                     </NavbarLink>}
                 </RowLinks>

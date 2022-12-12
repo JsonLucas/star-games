@@ -31,17 +31,14 @@ export default function FormSignUp() {
 	const { setAuth } = useLocalStorage();
 	const { genericToast } = useToast();
 	const { setIsLogged } = useContext(UserContext);
-    const [disabled, setDisabled] = useState<boolean>(false);
-    const [loading, setLoading] = useState<boolean>(false);
     const { register, handleSubmit } = useForm();
+    const [loading, setLoading] = useState<boolean>(false);
     const navigate = useNavigate();
     const signUp = async (userData: any) => {
-		setDisabled(true);
 		setLoading(true);
         try{
-            const response = await signUpRequest(userData);
-			const { data } = response;
-			setAuth({ accessToken: data.accessToken, refreshToken: data.refreshToken });
+            const data = await signUpRequest(userData);
+			setAuth(data);
 			setIsLogged(true);
             genericToast({ message: 'conta criada com sucesso!', type: 'success' });
             navigate('/');
@@ -49,7 +46,6 @@ export default function FormSignUp() {
             console.log(e);
 			genericToast({ message: e.message, type: 'error' });
         }
-		setDisabled(false);
 		setLoading(false);
     }
     return (
@@ -60,28 +56,28 @@ export default function FormSignUp() {
                         <BoxFieldIcon>
                             <IoIosPerson />
                         </BoxFieldIcon>
-                        <Field placeholder='* Nome completo. . .' disabled={disabled} type='text' 
+                        <Field placeholder='* Nome completo. . .' disabled={loading} type='text' 
                         {...register('name')} required />
                     </RowField>
                     <RowField>
                         <BoxFieldIcon>
                             <IoLogoGameControllerB />
                         </BoxFieldIcon>
-                        <Field placeholder='Nickname. . .' type='text' disabled={disabled} 
+                        <Field placeholder='Nickname. . .' type='text' disabled={loading} 
                         {...register('nickname')} />
                     </RowField>
                     <RowField>
                         <BoxFieldIcon>
                             <IoIosAt />
                         </BoxFieldIcon>
-                        <Field placeholder='* Email. . .' type='email' disabled={disabled} 
+                        <Field placeholder='* Email. . .' type='email' disabled={loading} 
                         {...register('email')} required />
                     </RowField>
                     <RowField>
                         <BoxFieldIcon>
                             <IoIosContact />
                         </BoxFieldIcon>
-                        <Field placeholder='* Cpf. . .' type='text' disabled={disabled} 
+                        <Field placeholder='* Cpf. . .' type='text' disabled={loading} 
                         {...register('cpf')} required />
                     </RowField>
                     {/* {<RowField>
@@ -89,24 +85,24 @@ export default function FormSignUp() {
                             <IoIosPhonePortrait />
                         </BoxFieldIcon>
                         <Field placeholder='Telefone. . .' type='tel' maxLength={11} 
-                        disabled={disabled} {...register('phone')} />
+                        disabled={loading} {...register('phone')} />
                     </RowField>} */}
                     <RowField>
                         <BoxFieldIcon>
                             <IoIosLock />
                         </BoxFieldIcon>
-                        <Field placeholder='* Senha. . .' type='password' disabled={disabled} 
+                        <Field placeholder='* Senha. . .' type='password' disabled={loading} 
                         {...register('password')} required />
                     </RowField>
                     <RowField>
                         <BoxFieldIcon>
                             <IoIosKey />
                         </BoxFieldIcon>
-                        <Field placeholder='* Confirmar Senha. . .' type='password' disabled={disabled} 
+                        <Field placeholder='* Confirmar Senha. . .' type='password' disabled={loading} 
                         {...register('confirmPassword')} required />
                     </RowField>
                     <RowField isButton={true}>
-                        <SubmitButton type='submit' disabled={disabled}>
+                        <SubmitButton type='submit' disabled={loading}>
                             {!loading && <>Cadastrar</>}
                             {loading && <ThreeDots height={19} width={40} 
                             wrapperStyle={{display: 'flex', justifyContent: 'center'}} />}

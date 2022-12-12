@@ -7,7 +7,6 @@ const axiosInstance = axios.create({ baseURL: "http://localhost:5000" });
 
 axiosInstance.interceptors.request.use(async (request) => {
   const auth = getAuth();
-  console.log(auth);
   if (auth) {
     request.headers = { authorization: `Bearer ${auth.accessToken}` };
   }
@@ -24,7 +23,6 @@ axiosInstance.interceptors.response.use(
     if ((response.status === 403) && (auth)) {
       const response = await axiosInstance.post("/auth", { refreshToken: auth.refreshToken });
       setAuth(response.data);
-      console.log(response.data);
     }
 	console.log(e);
   }

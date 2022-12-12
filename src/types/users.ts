@@ -1,4 +1,6 @@
-export interface Users {
+import { ILevel } from "./levels";
+
+export interface IUser {
 	id: number,
 	name: string,
 	nickname?: string,
@@ -13,18 +15,7 @@ export interface Users {
 	updatedAt: Date
 };
 
-export interface Levels {
-	id: number,
-    name: string,
-    totalPoints: number,
-    totalScore: number,
-    features: {
-        discount: number,
-        hasFreeShipping: boolean
-    }
-}
-
-export interface Cards {
+export interface ICards {
     id?: number,
     name: string,
     number: string,
@@ -33,7 +24,7 @@ export interface Cards {
     userId?: number
 }
 
-export interface Address {
+export interface IAddress {
     id?: number,
     cep: string,
     city: string,
@@ -45,5 +36,24 @@ export interface Address {
     userId?: number
 }
 
-export type Login = { login: string } & Pick<Users, 'password'>;
-export type SignUp = Users & { confirmPassword: string };
+export type Login = { login: string } & Pick<IUser, 'password'>;
+export type SignUp = IUser & { confirmPassword: string };
+export type UserData = Pick<IUser, "name" | "nickname" | "email" | "currentLevelPoints"> 
+& { level: Pick<ILevel, "id" | "name" | "totalPoints" | "features"> } 
+& { address: Array<{
+    street: string;
+    number: number;
+    state: string;
+    city: string;
+    neighborhood: string;
+    complement: string;
+    cep: string;
+  }>;
+} & {
+  card: Array<{
+    name: string;
+    number: string;
+    cvv: number;
+    expirationDate: Date;
+  }>;
+};

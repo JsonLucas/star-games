@@ -15,10 +15,14 @@ import { loginRequest } from "../../../api/services/users";
 import { Link, useNavigate } from "react-router-dom";
 import { IoIosAt, IoIosLock, IoIosArrowDropleftCircle } from 'react-icons/io';
 import { toast } from "react-toastify";
+import { useToast } from "../../../hooks/useToast";
+import { useLocalStorage } from "../../../hooks/useLocalStorage";
 
 export default function FormLogin (){
     const [loading, setLoading] = useState<boolean>(false);
     const [disabled, setDisabled] = useState<boolean>(false);
+	const { genericToast } = useToast();
+	const { setAuth } = useLocalStorage();
     const {register, handleSubmit} = useForm();
     const navigate = useNavigate();
     const loginSubmit = async (login: any) => {
@@ -26,13 +30,12 @@ export default function FormLogin (){
             setLoading(true);
             setDisabled(true);
             const data = await loginRequest(login);
-            alert(`bem vindo ${login.login}`);
-            localStorage.setItem('token', JSON.stringify(data.token));
-            localStorage.setItem('level', JSON.stringify(data.level));
+			setAuth(data);
+			genericToast({message: 'Login efetuado com sucesso!', type: 'success'});
             navigate('/');
         }catch(e: any){
             console.log(e);
-            toast(e.message);
+			genericToast({message: e.message, type: 'error'});
         }
     }
     return (
