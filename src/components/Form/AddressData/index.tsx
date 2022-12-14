@@ -1,119 +1,162 @@
-import { cloneElement, useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { IoIosArrowBack } from "react-icons/io";
-import { useLocation, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import { addAddressData, getAddresses } from "../../../api/services/purchases";
+import { useNavigate } from "react-router-dom";
+import { addAddressData } from "../../../api/services/purchases";
 import { getCityByCep } from "../../../api/services/users";
-import Loading from "../../Loading";
-import { BackButton } from "../../SingleProduct/styles";
-import { Container, RowField, SectionPayForm } from "../PayData/styles";
+import { useAddress } from "../../../hooks/useAddress";
+import { useToast } from "../../../hooks/useToast";
+import { Box, Text, Button } from "@chakra-ui/react";
+import { Field } from "../../Field";
+import { RowField } from "../../RowField";
+import { ContainerCardForm } from "../../ContainerCardForm";
 
 export default function AddressDataForm() {
-    const { register, handleSubmit } = useForm();
-    const [effectLoad, setEffectLoad] = useState<boolean>(false);
-    const [cep, setCep] = useState<string>('');
-    const [city, setCity] = useState<string>('');
-    const [state, setState] = useState<string>('');
-    const [load, setLoad] = useState<boolean>(false);
-    const [loadCep, setLoadCep] = useState<boolean>(false);
-    const navigate = useNavigate();
-    const location = useLocation();
-    const getCity = async () => {
-        setLoadCep(true);
-        try {
-            const { data } = await getCityByCep(cep);
-            const { localidade, uf } = data;
-            setCity(localidade);
-            setState(uf);
-            setLoadCep(false);
-        } catch (e: any) {
-            console.log(e);
-            toast(e.message);
-        }
+  const { addresses } = useAddress();
+  const { register, handleSubmit } = useForm();
+  const { genericToast } = useToast();
+  const [cep, setCep] = useState<string>("");
+  const [city, setCity] = useState<string>("");
+  const [state, setState] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [loadCep, setLoadCep] = useState<boolean>(false);
+  const navigate = useNavigate();
+  const getCity = async () => {
+    setLoadCep(true);
+    try {
+      const { data } = await getCityByCep(cep);
+      const { localidade, uf } = data;
+      setCity(localidade);
+      setState(uf);
+      setLoadCep(false);
+    } catch (e: any) {
+      console.log(e);
+      genericToast({ message: e.message, type: "error" });
     }
-    const addressData = async (data: any) => {
-        const completeData = { ...data, cep, city, state };
-        try {
-            setLoad(true);
-            const token = localStorage.getItem('token');
-            if (token) {
-                await addAddressData(completeData, { headers: { authorization: JSON.parse(token) } });
-                alert('endereço cadastrado.');
-                navigate('/purchase/finish');
-            }
-        } catch (e: any) {
-            console.log(e);
-            toast(e.message);
-            navigate('/');
-        }
+  };
+
+  const addressData = async (data: any) => {
+    const completeData = { ...data, cep, city, state };
+    setLoading(true);
+    try {
+      await addAddressData(completeData);
+      genericToast({ message: "endereço cadastrado.", type: "success" });
+      navigate("/purchase/finish");
+    } catch (e: any) {
+      console.log(e);
+      genericToast({ message: e.message, type: "error" });
+      navigate("/");
     }
-    useEffect(() => {
-        (async () => {
-            if(location.pathname !== '/profile'){
-                try {
-                    const token = localStorage.getItem('token');
-                    if (token) {
-                        const data = await getAddresses({ headers: { authorization: JSON.parse(token) } });
-                        if (data.length > 0) {
-                            navigate('/purchase/finish');
-                        }
-                        setEffectLoad(true);
-                    }
-                } catch (e: any) {
-                    console.log(e);
-                    toast(e.message);
-                    navigate('/');
-                }
-            }else { setEffectLoad(true); }
-        })();
-    }, []);
-    return (
-        <Container>
-            {!effectLoad && <Loading />}
-            {effectLoad &&
-                <SectionPayForm>
-                    <form onSubmit={handleSubmit(addressData)}>
-                        <RowField fieldType="street">
-                            <input type='text' {...register('street')} placeholder='Rua. . .'
-                                disabled={load} />
-                            <RowField fieldType="number">
-                                <input type='number' {...register('number')} min='0' placeholder='Número'
-                                    disabled={load} />
-                            </RowField>
-                        </RowField>
-                        <RowField>
-                            <input type='text' {...register('neighborhood')} placeholder='Bairro. . .'
-                                disabled={load} />
-                        </RowField>
-                        <RowField>
-                            <RowField fieldType="cvv">
-                                <input type='number' value={cep} min={0}
-                                    onChange={({ target }) => setCep(target.value)} placeholder='Cep. . .'
-                                    disabled={loadCep} onBlur={() => getCity()} />
-                            </RowField>
-                            <RowField>
-                                <input type='text' value={city} placeholder='Cidade. . .'
-                                    disabled />
-                            </RowField>
-                            <RowField>
-                                <input type='text' value={state} placeholder='Estado. . .'
-                                    disabled />
-                            </RowField>
-                        </RowField>
-                        <RowField fieldType="complement">
-                            <input type='text' {...register('complement')} placeholder='Complemento. . .'
-                                disabled={load} />
-                        </RowField>
-                        <RowField fieldType="button">
-                            <button type='submit' disabled={load}>Avançar</button>
-                        </RowField>
-                    </form>
-                    <BackButton onClick={() => navigate(-1)}>
-                        <IoIosArrowBack /> Voltar
-                    </BackButton>
-                </SectionPayForm>
-            }
-        </Container>
-    );
+    setLoading(false);
+  };
+
+  return (
+    <ContainerCardForm>
+      <Box
+        p="10px"
+        w="500px"
+        h="400px"
+        bgColor="black"
+        borderRadius="5px"
+        position="relative"
+      >
+        <RowField>
+          <Field
+            type="text"
+            register={register}
+            name="street"
+            placeholder="Rua. . ."
+            disabled={loading}
+          />
+          <Box>
+            <Field
+              type="number"
+              name="number"
+              register={register}
+              placeholder="Número"
+              disabled={loading}
+            />
+          </Box>
+        </RowField>
+        <RowField>
+          <Field
+            type="text"
+            name="neighborhood"
+            register={register}
+            placeholder="Bairro. . ."
+            disabled={loading}
+          />
+        </RowField>
+        <RowField>
+          <RowField>
+            <input
+              type="number"
+              value={cep}
+              min={0}
+              onChange={({ target }) => setCep(target.value)}
+              placeholder="Cep. . ."
+              disabled={loadCep}
+              onBlur={() => getCity()}
+            />
+          </RowField>
+          <RowField>
+            <Field
+              type="text"
+              register={register}
+              name="city"
+              value={city}
+              placeholder="Cidade. . ."
+              disabled={loadCep}
+            />
+          </RowField>
+          <RowField>
+            <Field
+              type="text"
+              name="state"
+              register={register}
+              value={state}
+              placeholder="Estado. . ."
+              disabled
+            />
+          </RowField>
+        </RowField>
+        <RowField>
+          <Field
+            type="text"
+            name="complement"
+            register={register}
+            placeholder="Complemento. . ."
+            disabled={loading}
+          />
+        </RowField>
+        <RowField>
+          <Button
+            onClick={handleSubmit(addressData)}
+            disabled={loading}
+            mt="10px"
+            w="30%"
+            cursor="pointer"
+          >
+            Avançar
+          </Button>
+        </RowField>
+        <Box
+          onClick={() => navigate(-1)}
+          p="5px"
+          w="80px"
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+          position="absolute"
+          left="5px"
+          color="white"
+          fontWeight="bold"
+          fontSize="17px"
+          cursor="pointer"
+        >
+          <IoIosArrowBack /> Voltar
+        </Box>
+      </Box>
+    </ContainerCardForm>
+  );
 }

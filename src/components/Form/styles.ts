@@ -43,17 +43,6 @@ export const RowField = styled.div<IProps>`
     margin-bottom: 10px;
 `;
 
-export const Field = styled.input`
-    box-sizing: border-box;
-    padding: 8px;
-    width: 90%;
-    border: none;
-    border-radius: 5px;
-    &:focus {
-        outline: 0;
-    }
-`;
-
 export const BoxFieldIcon = styled.p`
     box-sizing: border-box;
     padding: 1px;

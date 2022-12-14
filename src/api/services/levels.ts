@@ -1,6 +1,6 @@
 import axiosInstance from "..";
 
-export const getLevelByUserId = async (headers: any) => {
-	const { data } = await axiosInstance.get('/levels', headers);
+export const getLevelByUserId = async () => {
+	const { data } = await axiosInstance.get('/levels');
 	return data;
 }

@@ -9,11 +9,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.4.3",
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
     "@faker-js/faker": "^7.4.0",
     "@ramonak/react-progress-bar": "^5.0.2",
     "axios": "^0.27.2",
     "dayjs": "^1.11.5",
     "faker": "^6.6.6",
+    "framer-motion": "^7.7.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.34.0",

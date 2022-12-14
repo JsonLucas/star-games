@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 
-const { getAuth, setAuth } = useLocalStorage();
+const { getAuth, setAuth, removeAuth } = useLocalStorage();
 const axiosInstance = axios.create({ baseURL: "http://localhost:5000" });
 //const axiosInstance = axios.create({baseURL: 'https://star-games-jsonlucas.herokuapp.com'});
 
@@ -18,13 +18,14 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   async (e) => {
-    const { response } = e;
 	const auth = getAuth();
-    if ((response.status === 403) && (auth)) {
-      const response = await axiosInstance.post("/auth", { refreshToken: auth.refreshToken });
-      setAuth(response.data);
-    }
-	console.log(e);
+    if (auth) {
+	  const { refreshToken } = auth;
+      const { data } = await axiosInstance.post("/auth", { refreshToken });
+      setAuth(data);
+    }else{
+		removeAuth();
+	}
   }
 );
 

@@ -16,7 +16,7 @@ export default function Profile() {
         type: "error",
       };
       genericToast(props);
-	  navigate('/home');
+	  navigate('/');
     }
   }, []);
 

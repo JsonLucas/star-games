@@ -10,11 +10,18 @@ import Address from "./pages/Address";
 import Finish from "./pages/Finish";
 import Profile from "./pages/Profile";
 import { ToastContainer } from "react-toastify";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { UserContext } from "./contexts/user";
+import { useLocalStorage } from "./hooks/useLocalStorage";
 
 function App() {
+  const { getAuth } = useLocalStorage();
   const [isLogged, setIsLogged] = useState(false);
+  useEffect(() => {
+	if(getAuth()){
+		setIsLogged(true);
+	}
+  }, [isLogged]);
   return (
     <UserContext.Provider value={{ isLogged, setIsLogged }}>
       <BrowserRouter>
