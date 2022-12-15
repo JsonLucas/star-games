@@ -1,118 +1,192 @@
 import { IProducts, ProductCartData } from "../../types/products";
 import {
-    ActionButtons,
-    AddCartSection,
-    BackButton,
-    Container,
-    InternalContainer,
-    ProductDataBox,
-    ProductImageBox,
-    PurchaseOptions,
-    RowData,
-    RowProductInformations
+  ActionButtons,
+  AddCartSection,
+  BackButton,
+  Container,
+  InternalContainer,
+  ProductDataBox,
+  ProductImageBox,
+  PurchaseOptions,
+  RowData,
+  RowProductInformations,
 } from "./styles";
-import { IoIosArrowBack } from 'react-icons/io';
+import { IoIosArrowBack } from "react-icons/io";
 import { getProductById } from "../../api/services/products";
 import { useEffect, useState } from "react";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../Loading";
-import 'react-toastify/dist/ReactToastify.css';
+import { useToast } from "../../hooks/useToast";
+import { Box, Text, Image, Input, Button } from "@chakra-ui/react";
 
 export default function SingleProduct() {
-    const [product, setProduct] = useState<IProducts>(Object);
-    const [load, setLoad] = useState<boolean>(true);
-    const [quantity, setQuantity] = useState<number>(1);
-    const { productId } = useParams();
-    const navigate = useNavigate();
-    const addToCart = (product: ProductCartData) => {
-        try {
-            const cart = localStorage.getItem('cart');
-            if (cart) {
-                const auxCart = JSON.parse(cart);
-                localStorage.setItem('cart', JSON.stringify([...auxCart, product]));
-            } else {
-                localStorage.setItem('cart', JSON.stringify([product]));
-            }
-            toast('produto adicionado com sucesso ao carrinho');
-        } catch (e: any) {
-            console.log(e);
-            toast('falha ao adicionar produto ao carrinho');
-        }
+  const { genericToast } = useToast();
+  const [product, setProduct] = useState<IProducts>(Object);
+  const [load, setLoad] = useState<boolean>(true);
+  const [quantity, setQuantity] = useState<number>(1);
+  const { productId } = useParams();
+  const navigate = useNavigate();
+  const addToCart = (product: ProductCartData) => {
+    try {
+      const cart = localStorage.getItem("cart");
+      if (cart) {
+        const auxCart = JSON.parse(cart);
+        localStorage.setItem("cart", JSON.stringify([...auxCart, product]));
+      } else {
+        localStorage.setItem("cart", JSON.stringify([product]));
+      }
+      genericToast({
+        message: "produto adicionado com sucesso ao carrinho",
+        type: "success",
+      });
+    } catch (e: any) {
+      console.log(e);
+      genericToast({
+        message: "falha ao adicionar produto ao carrinho",
+        type: "error",
+      });
     }
-    useEffect(() => {
-        (async () => {
-            try {
-                if (productId) {
-                    const { data } = await getProductById(productId);
-                    setProduct(data);
-                    setLoad(false);
-                } else {
-                    toast('invalid param.');
-                    navigate('/');
-                }
-            } catch (e: any) {
-                console.log(e);
-                toast(e.message);
-            }
-        })();
-    });
-    return (
-        <Container>
-            {load && <Loading />}
-            {!load && <InternalContainer>
-                <RowProductInformations>
-                    <ProductImageBox>
-                        <img src={product.image} />
-                    </ProductImageBox>
-                    <ProductDataBox>
-                        <RowData dataType='description'>{product.name}</RowData>
-                        <RowData dataType='name'>{product.description}</RowData>
-                        <RowData dataType='price'>R$ {product.price}</RowData>
-                        <RowData dataType='shipping'>Frete: R$ {product.shipping}</RowData>
-                        <PurchaseOptions>
-                            Quantidade:
-                            <input type='number' min='1' max={product.stock} value={quantity} placeholder="Quantidade"
-                                onChange={({ target }) => setQuantity(parseInt(target.value))} />
-                        </PurchaseOptions>
-                        <AddCartSection>
-                            <div>
-                                <ActionButtons value='Adicionar aos favoritos.' type='button'
-                                    onClick={() => { /* função de adicionar aos favoritos */ }} />
-                            </div>
-                            <div>
-                                <ActionButtons value='Adicionar ao carrinho.' type='button'
-                                    onClick={() => {
-                                        addToCart({
-                                            id: product.id, name: product.name,
-                                            description: product.description,
-                                            price: (product.price + product.shipping),
-                                            image: product.image, updatedStock: (product.stock - quantity),
-											quantity
-                                        });
-                                    }} />
-                            </div>
-                            <div>
-                                <ActionButtons value='Comprar' type='button'
-                                    onClick={() => {
-                                        addToCart({
-                                            id: product.id, name: product.name,
-                                            description: product.description,
-                                            price: (product.price + product.shipping),
-                                            image: product.image, quantity, updatedStock: (product.stock - quantity)
-                                        });
-                                        navigate('/purchase/address');
-                                    }} />
-                            </div>
-                        </AddCartSection>
-                        <RowData dataType='shipping'>Em estoque ({product.stock} restantes)</RowData>
-                        <ToastContainer />
-                    </ProductDataBox>
-                    <BackButton onClick={() => navigate(-1)}>
-                        <IoIosArrowBack /> Voltar
-                    </BackButton>
-                </RowProductInformations>
-            </InternalContainer>}
-        </Container>
-    );
+  };
+  useEffect(() => {
+    (async () => {
+      try {
+        if (productId) {
+          const data = await getProductById(productId);
+          setProduct(data);
+          setLoad(false);
+        } else {
+          toast("invalid param.");
+          navigate("/");
+        }
+      } catch (e: any) {
+        console.log(e);
+        toast(e.message);
+      }
+    })();
+  });
+  return (
+    <Box
+      w="100%"
+      h="82vh"
+      position="absolute"
+      display="flex"
+      fontFamily="'Permanent Marker', cursive"
+    >
+      {load && <Loading />}
+      {!load && (
+        <Box w="90%" m="10px auto">
+          <Box
+            w="100%"
+            display="flex"
+            justifyContent="space-around"
+            position="relative"
+          >
+            <Box p="5px" w="30%">
+              <Image h="100%" w="100%" src={product.image} />
+            </Box>
+            <Box p="5px" w="31%" display="flex" flexDir="column">
+              <Text fontSize="20px" fontWeight="bold">
+                {product.name}
+              </Text>
+              <Text fontSize="20px" fontWeight="bold">
+                {product.description}
+              </Text>
+              <Text fontSize="23px">R$ {product.price}</Text>
+              <Text fontSize="15px">Frete: R$ {product.shipping}</Text>
+              <Box w="200px">
+                Quantidade:
+                <Input
+                  p="3px"
+                  border="1px solid rgba(0, 0, 0, 0.7)"
+                  w="100%"
+                  type="number"
+                  min="1"
+                  max={product.stock}
+                  value={quantity}
+                  placeholder="Quantidade"
+                  onChange={({ target }) => setQuantity(parseInt(target.value))}
+                />
+              </Box>
+              <Box w="100%" mt="25px">
+                <Box w="100%">
+                  <ActionButtons
+                    value="Adicionar aos favoritos."
+                    type="button"
+                    onClick={() => {
+                      /* função de adicionar aos favoritos */
+                    }}
+                  />
+                </Box>
+                <Box w="100%">
+                  <Button
+                    p="10px"
+                    w="100%"
+                    border="none"
+                    borderRadius="5px"
+                    m="auto auto 8px"
+                    type="button"
+                    onClick={() => {
+                      addToCart({
+                        id: product.id,
+                        name: product.name,
+                        description: product.description,
+                        price: product.price + product.shipping,
+                        image: product.image,
+                        updatedStock: product.stock - quantity,
+                        quantity,
+                      });
+                    }}
+                  >
+                    Adicionar ao carrinho
+                  </Button>
+                </Box>
+                <Box w="100%">
+                  <Button
+                    p="10px"
+                    w="100%"
+                    border="none"
+                    borderRadius="5px"
+                    m="auto auto 8px"
+                    value="Comprar"
+                    type="button"
+                    onClick={() => {
+                      addToCart({
+                        id: product.id,
+                        name: product.name,
+                        description: product.description,
+                        price: product.price + product.shipping,
+                        image: product.image,
+                        quantity,
+                        updatedStock: product.stock - quantity,
+                      });
+                      navigate("/purchase/address");
+                    }}
+                  >
+                    Comprar
+                  </Button>
+                </Box>
+              </Box>
+              <Text p="5px" fontSize="15px">
+                Em estoque ({product.stock} restantes)
+              </Text>
+              <ToastContainer />
+            </Box>
+            <Box
+              position="absolute"
+              top="105%"
+              left="0px"
+              border="1px solid lightgrey"
+              p="10px"
+              fontWeight="bold"
+              cursor="pointer"
+              onClick={() => navigate(-1)}
+            >
+              <IoIosArrowBack /> Voltar
+            </Box>
+          </Box>
+        </Box>
+      )}
+    </Box>
+  );
 }

@@ -1,4 +1,5 @@
 import axiosInstance from "..";
+import { IPurchases } from "../../types/purchases";
 import { IAddress, ICards } from "../../types/users";
 
 export const purchase = async (body: any) => {

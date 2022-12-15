@@ -13,6 +13,7 @@ import {
 } from "./styles";
 import Loading from "../Loading";
 import { useProducts } from "../../hooks/useProducts";
+import { Box, Image, Text } from "@chakra-ui/react";
 
 interface Features {
   hasFreeShipping: boolean;
@@ -26,25 +27,40 @@ export default function Products() {
   const location = useLocation();
   const navigate = useNavigate();
   return (
-    <Container>
+    <Box
+      p="10px"
+      w="92%"
+      bgColor="transparent"
+      m="15px auto"
+      position="relative"
+      fontFamily="'Silkscreen', cursive"
+    >
       {products.isLoading && <Loading />}
       {products.data && (
-        <RowSection>
+        <Box w="100%">
           {products.data.map((item, index) => (
-            <ProductBox
+            <Box
+              w="230px"
+              h="400px"
+              bgColor="white"
+              boxShadow="0px 0px 5px 0px rgba(0, 0, 0, 0.3)"
+              cursor="pointer"
+              position="relative"
+              float="left"
+              m="0px 14.2px 15px 0px"
               key={index}
               onClick={() => {
                 navigate(`/product/${item.id}`);
               }}
             >
-              <FavoriteIcon>
+              <Text position='absolute' bottom='10px' right='10px' color='black' fontSize='22px' fontWeight='bold'>
                 <IoIosHeartEmpty />
-              </FavoriteIcon>
-              <ImageSection>
-                <img src={item.image} alt="Fail do charge the image" />
-              </ImageSection>
-              <ProductInformations>
-                <RowInformation>
+              </Text>
+              <Box w='95%' h='50%' m='auto' bgColor='grey'>
+                <Image w='100%' h='100%' src={item.image} alt="Fail do charge the image" />
+              </Box>
+              <Box w='95%' margin='5px auto' bgColor='transparent'>
+                <Box fontSize='17px' fontWeight='bold'>
                   {features && (
                     <>
                       {features.discount > 0 && (
@@ -54,9 +70,9 @@ export default function Products() {
                     </>
                   )}
                   {!features && <>R$ {item.price}</>}
-                </RowInformation>
-                <RowInformation>{item.name}</RowInformation>
-                <RowInformation>
+                </Box>
+                <Box fontSize='17px' fontWeight='bold'>{item.name}</Box>
+                <Box fontSize='17px' fontWeight='bold'>
                   {features && (
                     <>
                       {features.hasFreeShipping && (
@@ -81,12 +97,12 @@ export default function Products() {
                     </>
                   )}
                   {!features && <>Frete: R$ {item.shipping}</>}
-                </RowInformation>
-              </ProductInformations>
-            </ProductBox>
+                </Box>
+              </Box>
+            </Box>
           ))}
-        </RowSection>
+        </Box>
       )}
-    </Container>
+    </Box>
   );
 }

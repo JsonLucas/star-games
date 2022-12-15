@@ -13,6 +13,7 @@ import { ToastContainer } from "react-toastify";
 import { useEffect, useState } from "react";
 import { UserContext } from "./contexts/user";
 import { useLocalStorage } from "./hooks/useLocalStorage";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const { getAuth } = useLocalStorage();
@@ -24,8 +25,8 @@ function App() {
   }, [isLogged]);
   return (
     <UserContext.Provider value={{ isLogged, setIsLogged }}>
+      <ToastContainer />
       <BrowserRouter>
-        <ToastContainer />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/sign-up" element={<SignUp />} />

@@ -1,167 +1,76 @@
-import styled from 'styled-components';
-
-interface IProps {
-    isFocused: boolean | null
+export const Container = {
+	w:'100%', 
+	h:'100px', 
+	bgColor:'black', 
+	fontFamily:"'Silkscreen', cursive"
 }
 
-export const Container = styled.header`
-    width: 100%;
-    height: 100px;
-    background-color: black;
-    font-family: 'Silkscreen', cursive;
-`;
+export const MainRow = {
+	w: '100%',
+	h: '50%',
+	display:'flex', 
+	justifyContent:'center', 
+	alignItems:'center', 
+	bgColor:'transparent', 
+}
 
-export const RowTop = styled.div`
-    width: 100%;
-    box-sizing: border-box;
-    height: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: transparent;
-    position: relative;
-`;
+export const BoxLevelData = {
+	w: '300px', 
+	h: '35px', 
+	top: '10px', 
+	left: '20px', 
+	bgColor: 'transparent', 
+	display: 'flex',
+	justifyContent: 'space-between',
+	alignItems: 'center'
+}
 
-export const BoxField = styled.div<IProps>`
-    box-sizing: border-box;
-    width: 450px;
-    display: flex;
-    justify-content: space-around;
-    background-color: white;
-    align-items: center;
-    border-radius: 5px;
-    ${({isFocused}) => isFocused ? `
-    outline-style: solid;
-    outline-width: 3px;
-    outline-color: blue;
-    ` 
-    : ``}
-`;
+export const StarLevel = {
+	h: '100%', 
+	w: '30px', 
+	display: 'flex', 
+	justifyContent: 'center', 
+	alignItems: 'center', 
+	bgColor: 'transparent', 
+	fontSize: '33px'
+}
 
-export const SearchField = styled.input`
-    box-sizing: border-box;
-    padding: 8px;
-    width: 90%;
-    border: none;
-    border-radius: 5px;
-    &:focus{
-        outline: 0;
-    }
-`;
+export const StarLevelText = {
+	m: '0 auto', 
+	fontSize: '15px', 
+	fontWeight: 'bold'
+}
 
-export const RowBottom = styled.div`
-    box-sizing: border-box;
-    width: 100%;
-    height: 50%;
-    background-color: transparent;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-`;
+export const SearchBox = {
+	w: '450px', 
+	display: 'flex', 
+	justifyContent: 'space-around', 
+	bgColor: 'white', 
+	alignItems: 'center',
+	borderRadius: '5px', 
+	_focus: {outlineStyle: 'solid', outlineWidth: '3px', outlineColor: 'blue'}
+}
 
-export const RowLinks = styled.nav`
-    box-sizing: border-box;
-    height: 75%;
-    width: 650px;
-    display: flex;
-    justify-content: space-between;
-`;
+export const SignOptionsBox = {
+	right: '20px', 
+	top: '20px', 
+	display: 'flex', 
+	w: '90px', 
+	justifyContent: 'space-around', 
+	bgColor: 'transparent',
+	cursor: 'pointer'
+}
 
-export const NavbarLink = styled.p`
-    box-sizing: border-box;
-    text-align: center;
-    padding: 5px;
-    display: flex;
-    align-items: center;
-    color: red;
-    a{
-        &:hover{
-            cursor: pointer;
-            color: darkred;
-        }
-    }
-`;
+export const SignOptionsText = {
+	color: 'white', 
+	alignItems: 'center', 
+	fontSize: '20px', 
+	fontWeight: 'bold'
+}
 
-export const SignUser = styled.div`
-    box-sizing: border-box;
-    position: absolute;
-    right: 20px;
-    top: 20px;
-    display: flex;
-    width: 90px;
-    justify-content: space-around;
-    background-color: transparent;
-    cursor: pointer;
-`;
-
-export const SignUserButtons = styled.p`
-    box-sizing: border-box;
-    color: white;
-    align-items: center;
-    font-size: 20px;
-    font-weight: bold;
-`;
-
-export const UserWelcome = styled.p`
-    box-sizing: border-box;
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    font-size: 18px;
-    color: white;
-    span {
-        font-size: 20px;
-        font-weight: bold;
-    }
-`;
-
-export const RowUserProgress = styled.div`
-    box-sizing: border-box;
-    width: 300px;
-    height: 35px;
-    position: absolute;
-    top: 10px;
-    left: 20px;
-    background-color: transparent;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-`;
-
-export const BoxStar = styled.div`
-    box-sizing: border-box;
-    height: 100%;
-    width: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    background-color: transparent;
-    font-size: 33px;
-    p {
-        position: absolute;
-        margin: 0 auto;
-        font-size: 15px;
-        font-weight: bold;
-    }
-`;
-
-export const RowProgressBar = styled.div`
-    box-sizing: border-box;
-    text-align: center;
-    color: white;
-`;
-
-export const BoxCart = styled.div`
-    box-sizing: border-box;
-    position: absolute;
-    top: 15px;
-    right: 30px;
-    font-size: 25px;
-    color: white;
-    cursor: pointer;
-    &:hover{
-        color: red;
-    }
-`;
+export const NavBarLink = {
+	p: '5px', 
+	display: 'flex', 
+	alignItems: 'center', 
+	color: 'red'
+}

@@ -1,20 +1,5 @@
 import { Fragment, useContext, useState } from "react";
-import {
-    BoxCart,
-    BoxField,
-    BoxStar,
-    Container,
-    NavbarLink,
-    RowBottom,
-    RowLinks,
-    RowProgressBar,
-    RowTop,
-    RowUserProgress,
-    SearchField,
-    SignUser,
-    SignUserButtons,
-    UserWelcome,
-} from "./styles";
+import { BoxLevelData, Container, MainRow, NavBarLink, SearchBox, SignOptionsBox, SignOptionsText, StarLevel, StarLevelText } from "./styles";
 import { Link } from "react-router-dom";
 import { IoIosSearch, IoIosLogIn, IoIosLogOut, IoIosStar, IoIosCart } from "react-icons/io";
 import ProgressBar from "@ramonak/react-progress-bar";
@@ -23,6 +8,7 @@ import { UserLevel } from "../../types/levels";
 import { UserContext } from "../../contexts/user";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { useToast } from "../../hooks/useToast";
+import { Box, Input, Text } from "@chakra-ui/react";
 
 interface Props{
 	levelData?: UserLevel
@@ -44,33 +30,36 @@ export default function Header({ levelData }: Props) {
         }
     }
     return (
-        <Container>
-            <RowTop>
+        <Box {...Container}>
+            <Box {...MainRow} position='relative'>
                 {!isLogged && (
-                    <UserWelcome>
-                        Ainda não tem uma conta? <Link to='/sign-up'><span>Cadastre-se!</span></Link>
-                    </UserWelcome>
+                    <Box position='absolute' top='20px' left='20px' fontSize='18px' color='white'>
+                        Ainda não tem uma conta? 
+						<Link to='/sign-up'><Text fontSize='20px' fontWeight='bold'>Cadastre-se!</Text></Link>
+                    </Box>
                 )}
                 {isLogged && levelData && (
-                    <RowUserProgress>
-                        <BoxStar>
+                    <Box {...BoxLevelData} position='absolute'>
+                        <Box {...StarLevel} position='relative'>
                             <IoIosStar color="yellow" />
-                            <p>{levelData.id}</p>
-                        </BoxStar>
-                        <RowProgressBar>
+                            <Text position='absolute' {...StarLevelText}>{levelData.id}</Text>
+                        </Box>
+                        <Box textAlign='center' color='white'>
                             <ProgressBar completed={levelData.totalScore} 
                             maxCompleted={levelData.totalPoints} width='200px' height="15px" 
                             bgColor="grey" baseBgColor="white" isLabelVisible={false} />
                             {levelData.name}
-                        </RowProgressBar>
-                        <BoxStar>
+                        </Box>
+                        <Box {...StarLevel} position='relative'>
                             <IoIosStar color="yellow" />
-                            <p>{levelData.id + 1}</p>
-                        </BoxStar>
-                    </RowUserProgress>
+                            <Text position='absolute' {...StarLevelText}>
+								{levelData.id + 1}
+							</Text>
+                        </Box>
+                    </Box>
                 )}
-                <BoxField isFocused={focus}>
-                    <SearchField
+                <Box {...SearchBox}>
+                    <Input p='8px' w='90%' border='none' borderRadius='5px' _focus={{outline: 0}}
                         type="search"
                         name="search"
                         placeholder={`Buscar por: `}
@@ -82,47 +71,48 @@ export default function Header({ levelData }: Props) {
                         }}
                     />
                     <IoIosSearch size={25} color="black" />
-                </BoxField>
-                <SignUser>
-                    {isLogged && <Fragment>
-                        <SignUserButtons onClick={logout}>Sair</SignUserButtons>
-                        <SignUserButtons>
+                </Box>
+                <Box position='absolute' {...SignOptionsBox}>
+                    {isLogged && <>
+                        <Text {...SignOptionsText} onClick={logout}>Sair</Text>
+                        <Text {...SignOptionsText}>
                             <IoIosLogOut size={21} color="white" />
-                        </SignUserButtons>
-                    </Fragment>
-                    }{!isLogged && <Fragment>
+                        </Text>
+                    </>
+                    }{!isLogged && <>
                         <Link to="/login">
-                            <SignUserButtons>Entrar</SignUserButtons>
+                            <Text {...SignOptionsText}>Entrar</Text>
                         </Link>
-                        <SignUserButtons>
+                        <Text {...SignOptionsText}>
                             <IoIosLogIn size={21} color="white" />
-                        </SignUserButtons>
-                    </Fragment>
+                        </Text>
+                    </>
                     }
-                </SignUser>
-            </RowTop>
-            <RowBottom>
-                <RowLinks>
-                    <NavbarLink>
+                </Box>
+            </Box>
+            <Box w='100%' h='50%' bgColor='transparent' display='flex' justifyContent='center' alignItems='center' position='relative'>
+                <Box h='75%' w='650px' display='flex' justifyContent='space-between'>
+                    <Box {...NavBarLink} textAlign='center'>
                         <Link to="/">Home</Link>
-                    </NavbarLink>
-                    <NavbarLink>
+                    </Box>
+                    <Box {...NavBarLink} textAlign='center'>
                         <Link to='/history'>Histórico</Link>
-                    </NavbarLink>{/*
+                    </Box>{/*
                     <NavbarLink>
                         <Link to='/favorites'>Favoritos</Link></NavbarLink>*/}
-                    <NavbarLink>
+                    <Box {...NavBarLink} textAlign='center'>
                         <Link to='/catalogue'>Todos os produtos</Link>
-                    </NavbarLink>
-                    {isLogged && <NavbarLink>
+                    </Box>
+                    {isLogged && <Box {...NavBarLink} textAlign='center'>
                         <Link to='/profile'>Minha conta</Link>
-                    </NavbarLink>}
-                </RowLinks>
-                <BoxCart onClick={() => setOpen(true)}>
+                    </Box>}
+                </Box>
+                <Box position='absolute' top='15px' right='30px' fontSize='25px' color='white' cursor='pointer' 
+				onClick={() => setOpen(true)}>
                     <IoIosCart />
-                </BoxCart>
+                </Box>
                 <ModalCart open={open} setOpen={setOpen} />
-            </RowBottom>
-        </Container>
+            </Box>
+        </Box>
     );
 }
