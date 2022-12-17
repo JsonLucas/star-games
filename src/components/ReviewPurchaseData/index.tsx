@@ -1,23 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
-import { useState, useEffect, Fragment } from "react";
-import {
-  CartDataReview,
-  Container,
-  InternalContainer,
-  SectionCartData,
-  SectionReward,
-  SectionUserData,
-  UserAddressData,
-  UserPaymentData,
-  WrapperPaymentData,
-  RowPaymentData,
-  RowData,
-  WrapperCartData,
-  RowCartData,
-  RowCartInformation,
-  RowActionButtons,
-} from "./styles";
+import { useState, useEffect } from "react";
 import { faker } from "@faker-js/faker";
 import { ThreeDots } from "react-loader-spinner";
 import { IAddress, ICards } from "../../types/users";
@@ -30,8 +12,10 @@ import {
 import Loading from "../Loading";
 import dayjs from "dayjs";
 import { Box, Text, Image, Button, Input, Select } from "@chakra-ui/react";
+import { useToast } from "../../hooks/useToast";
 
 export default function ReviewPurchaseData() {
+  const { genericToast } = useToast();
   const [load, setLoad] = useState<boolean>(false);
   const [loadCard, setLoadCard] = useState<boolean>(false);
   const [cards, setCards] = useState<Array<ICards>>([]);
@@ -58,36 +42,39 @@ export default function ReviewPurchaseData() {
   };
   const confirmPurchase = async () => {
     try {
-      const token = localStorage.getItem("token");
-      if (token) {
-        let body;
-        payMethod === "card"
-          ? (body = {
-              products: formatCartInformation(cart),
-              cardId: selectCard,
-              addressId: selectAddress,
-              scorePoints,
-              payMethod,
-            })
-          : (body = {
-              products: formatCartInformation(cart),
-              addressId: selectAddress,
-              scorePoints,
-              payMethod,
-            });
-        if (selectCard !== "" || selectAddress !== "") {
-          setLoad(false);
-          await purchase(body);
-          toast("compra concluída com sucesso.");
-          //localStorage.removeItem('cart');
-          //navigate('/');
-        } else {
-          toast("Selecione uma das opções de cartão e endereço");
-        }
+      let body;
+      payMethod === "card"
+        ? (body = {
+            products: formatCartInformation(cart),
+            cardId: selectCard,
+            addressId: selectAddress,
+            scorePoints,
+            payMethod,
+          })
+        : (body = {
+            products: formatCartInformation(cart),
+            addressId: selectAddress,
+            scorePoints,
+            payMethod,
+          });
+      if (selectCard !== "" || selectAddress !== "") {
+        setLoad(false);
+        await purchase(body);
+        genericToast({
+          message: "compra concluída com sucesso.",
+          type: "success",
+        });
+        //localStorage.removeItem('cart');
+        //navigate('/');
+      } else {
+        genericToast({
+          message: "Selecione uma das opções de cartão e endereço",
+          type: "warning",
+        });
       }
     } catch (e: any) {
       console.log(e);
-      toast(e.message);
+      genericToast({ message: e.message, type: "error" });
       navigate("/");
     }
     setLoad(true);
@@ -102,24 +89,21 @@ export default function ReviewPurchaseData() {
     }
     (async () => {
       try {
-        const cartData = localStorage.getItem("cart");
-        const token = localStorage.getItem("token");
+        const cartData = localStorage.getItem("star-games-cart");
         if (cartData) {
           const cart = JSON.parse(cartData);
           setCart(cart);
           setScorePoints(calculatePoints(cart));
-          if (token) {
-            const addresses = await getAddresses();
-            setAddresses(addresses);
-            setLoad(true);
-          }
+          const addresses = await getAddresses();
+          setAddresses(addresses);
+          setLoad(true);
         } else {
-          alert("carrinho vazio");
+          genericToast({ message: "carrinho vazio", type: "warning" });
           navigate("/");
         }
       } catch (e: any) {
         console.log(e);
-        toast(e.message);
+        genericToast({ message: e.message, type: "error" });
       }
     })();
   }, []);
@@ -131,7 +115,7 @@ export default function ReviewPurchaseData() {
         setLoadCard(true);
       } catch (e: any) {
         console.log(e);
-        toast(e.message);
+        genericToast({ message: e.message, type: "error" });
       }
     })();
   }, [payMethod]);

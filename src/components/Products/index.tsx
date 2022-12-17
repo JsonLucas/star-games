@@ -1,16 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { getProducts } from "../../api/services/products";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { IoIosHeartEmpty, IoIosHeart } from "react-icons/io";
-import {
-  Container,
-  FavoriteIcon,
-  ImageSection,
-  ProductBox,
-  ProductInformations,
-  RowInformation,
-  RowSection,
-} from "./styles";
 import Loading from "../Loading";
 import { useProducts } from "../../hooks/useProducts";
 import { Box, Image, Text } from "@chakra-ui/react";

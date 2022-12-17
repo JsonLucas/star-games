@@ -1,16 +1,4 @@
 import { IProducts, ProductCartData } from "../../types/products";
-import {
-  ActionButtons,
-  AddCartSection,
-  BackButton,
-  Container,
-  InternalContainer,
-  ProductDataBox,
-  ProductImageBox,
-  PurchaseOptions,
-  RowData,
-  RowProductInformations,
-} from "./styles";
 import { IoIosArrowBack } from "react-icons/io";
 import { getProductById } from "../../api/services/products";
 import { useEffect, useState } from "react";
@@ -32,9 +20,9 @@ export default function SingleProduct() {
       const cart = localStorage.getItem("cart");
       if (cart) {
         const auxCart = JSON.parse(cart);
-        localStorage.setItem("cart", JSON.stringify([...auxCart, product]));
+        localStorage.setItem("star-games-cart", JSON.stringify([...auxCart, product]));
       } else {
-        localStorage.setItem("cart", JSON.stringify([product]));
+        localStorage.setItem("star-games-cart", JSON.stringify([product]));
       }
       genericToast({
         message: "produto adicionado com sucesso ao carrinho",
@@ -110,13 +98,19 @@ export default function SingleProduct() {
               </Box>
               <Box w="100%" mt="25px">
                 <Box w="100%">
-                  <ActionButtons
-                    value="Adicionar aos favoritos."
+                  <Button
+                    p="10px"
+                    w="100%"
+                    border="none"
+                    borderRadius="5px"
+                    m="auto auto 8px"
                     type="button"
                     onClick={() => {
                       /* função de adicionar aos favoritos */
                     }}
-                  />
+                  >
+                    Adicionar aos favoritos.
+                  </Button>
                 </Box>
                 <Box w="100%">
                   <Button

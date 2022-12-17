@@ -19,9 +19,9 @@ function App() {
   const { getAuth } = useLocalStorage();
   const [isLogged, setIsLogged] = useState(false);
   useEffect(() => {
-	if(getAuth()){
-		setIsLogged(true);
-	}
+    if (getAuth()) {
+      setIsLogged(true);
+    }
   }, [isLogged]);
   return (
     <UserContext.Provider value={{ isLogged, setIsLogged }}>
@@ -29,15 +29,23 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/sign-up" element={<SignUp />} />
-          <Route path="/login" element={<Login />} />
           <Route path="/product/:productId" element={<Product />} />
           <Route path="/catalogue" element={<Catalogue />} />
-          <Route path="/history" element={<History />} />
-          <Route path="/purchase/payment" element={<Payment />} />
-          <Route path="/purchase/address" element={<Address />} />
-          <Route path="/purchase/finish" element={<Finish />} />
-          <Route path="/profile" element={<Profile />} />
+          {!isLogged && (
+            <>
+              <Route path="/sign-up" element={<SignUp />} />
+              <Route path="/login" element={<Login />} />
+            </>
+          )}
+          {isLogged && (
+            <>
+              <Route path="/history" element={<History />} />
+              <Route path="/purchase/payment" element={<Payment />} />
+              <Route path="/purchase/address" element={<Address />} />
+              <Route path="/purchase/finish" element={<Finish />} />
+              <Route path="/profile" element={<Profile />} />
+            </>
+          )}
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>
