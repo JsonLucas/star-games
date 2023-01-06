@@ -4,9 +4,9 @@ import { getProductById } from "../../api/services/products";
 import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
-import Loading from "../Loading";
 import { useToast } from "../../hooks/useToast";
 import { Box, Text, Image, Input, Button } from "@chakra-ui/react";
+import Loading from "../Loading";
 
 export default function SingleProduct() {
   const { genericToast } = useToast();
@@ -36,23 +36,23 @@ export default function SingleProduct() {
       });
     }
   };
-  useEffect(() => {
-    (async () => {
-      try {
-        if (productId) {
-          const data = await getProductById(productId);
-          setProduct(data);
-          setLoad(false);
-        } else {
-          toast("invalid param.");
-          navigate("/");
-        }
-      } catch (e: any) {
-        console.log(e);
-        toast(e.message);
-      }
-    })();
-  });
+//   useEffect(() => {
+//     (async () => {
+//       try {
+//         if (productId) {
+//           const data = await getProductById(Number(productId));
+//           setProduct(data);
+//         } else {
+//           toast("invalid param.");
+//           navigate("/");
+//         }
+//       } catch (e: any) {
+//         console.log(e);
+//         toast(e.message);
+//       }
+//       setLoad(false);
+//     })();
+//   }, []);
   return (
     <Box
       w="100%"

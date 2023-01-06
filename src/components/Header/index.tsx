@@ -1,22 +1,17 @@
-import { Fragment, useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { BoxLevelData, Container, MainRow, NavBarLink, SearchBox, SignOptionsBox, SignOptionsText, StarLevel, StarLevelText } from "./styles";
 import { Link } from "react-router-dom";
 import { IoIosSearch, IoIosLogIn, IoIosLogOut, IoIosStar, IoIosCart } from "react-icons/io";
 import ProgressBar from "@ramonak/react-progress-bar";
 import ModalCart from "../Modals/ModalCart";
-import { UserLevel } from "../../types/levels";
 import { UserContext } from "../../contexts/user";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { useToast } from "../../hooks/useToast";
 import { Box, Input, Text } from "@chakra-ui/react";
 
-interface Props{
-	levelData?: UserLevel
-}
-
-export default function Header({ levelData }: Props) {
+export default function Header() {
     const [focus, setFocus] = useState<boolean>(false);
-	const { isLogged } = useContext(UserContext);
+	const { isLogged, userLevel } = useContext(UserContext);
 	const { removeAuth } = useLocalStorage();
 	const { genericToast } = useToast();
     const [open, setOpen] = useState<boolean>(false);
@@ -38,22 +33,22 @@ export default function Header({ levelData }: Props) {
 						<Link to='/sign-up'><Text fontSize='20px' fontWeight='bold'>Cadastre-se!</Text></Link>
                     </Box>
                 )}
-                {isLogged && levelData && (
+                {isLogged && userLevel && (
                     <Box {...BoxLevelData} position='absolute'>
                         <Box {...StarLevel} position='relative'>
                             <IoIosStar color="yellow" />
-                            <Text position='absolute' {...StarLevelText}>{levelData.id}</Text>
+                            <Text position='absolute' {...StarLevelText}>{userLevel.id}</Text>
                         </Box>
                         <Box textAlign='center' color='white'>
-                            <ProgressBar completed={levelData.totalScore} 
-                            maxCompleted={levelData.totalPoints} width='200px' height="15px" 
+                            <ProgressBar completed={userLevel.totalScore} 
+                            maxCompleted={userLevel.totalPoints} width='200px' height="15px" 
                             bgColor="grey" baseBgColor="white" isLabelVisible={false} />
-                            {levelData.name}
+                            {userLevel.name}
                         </Box>
                         <Box {...StarLevel} position='relative'>
                             <IoIosStar color="yellow" />
                             <Text position='absolute' {...StarLevelText}>
-								{levelData.id + 1}
+								{userLevel.id + 1}
 							</Text>
                         </Box>
                     </Box>
@@ -97,9 +92,10 @@ export default function Header({ levelData }: Props) {
                     </Box>
                     <Box {...NavBarLink} textAlign='center'>
                         <Link to='/history'>Histórico</Link>
-                    </Box>{/*
-                    <NavbarLink>
-                        <Link to='/favorites'>Favoritos</Link></NavbarLink>*/}
+                    </Box>
+                    <Box {...NavBarLink} textAlign='center'>
+                        <Link to='/favorites'>Favoritos</Link>
+					</Box>
                     <Box {...NavBarLink} textAlign='center'>
                         <Link to='/catalogue'>Todos os produtos</Link>
                     </Box>

@@ -11,4 +11,5 @@ export interface IProducts {
 	updatedAt?: Date
 };
 
+export type Products = IProducts & { favorite?: boolean };
 export type ProductCartData = {quantity: number, updatedStock: number} & Omit<IProducts, 'categoryId' | 'shipping' | 'stock'>;

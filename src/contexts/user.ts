@@ -1,8 +1,11 @@
 import { createContext } from "react";
+import { UserLevel } from "../types/levels";
 
-interface LoggedContext{
+interface ILoggedContext{
 	isLogged: boolean,
-	setIsLogged: (param: boolean) => void
+	userLevel?: UserLevel,
+	setIsLogged: (param: boolean) => void,
+	setUserLevel?: (param: UserLevel) => void
 }
 
-export const UserContext = createContext({ } as LoggedContext);
+export const UserContext = createContext({ } as ILoggedContext);

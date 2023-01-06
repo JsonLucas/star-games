@@ -138,7 +138,8 @@ export default function FormSignUp() {
           />
         </RowField>
         <RowField>
-          <Button onSubmit={handleSubmit(signUp)} disabled={loading}>
+          <Button onClick={handleSubmit(signUp)} disabled={loading} p='9px' w='100%' border='none' borderRadius='5px' m='auto'
+		  bgColor='darkblue' color='white' cursor='pointer'>
             {!loading && <>Cadastrar</>}
             {loading && (
               <ThreeDots

@@ -28,11 +28,11 @@ export default function AddressDataForm() {
       const { localidade, uf } = data;
       setCity(localidade);
       setState(uf);
-      setLoadCep(false);
     } catch (e: any) {
       console.log(e);
       genericToast({ message: e.message, type: "error" });
     }
+    setLoadCep(false);
   };
 
   const addressData = async (data: any) => {
@@ -135,7 +135,7 @@ export default function AddressDataForm() {
             disabled={loading}
             mt="10px"
             w="30%"
-			p='5px'
+            p="5px"
             cursor="pointer"
           >
             Avançar

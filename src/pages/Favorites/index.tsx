@@ -3,13 +3,13 @@ import Loading from "../../components/Loading";
 import ProductList from "../../components/Products";
 import { useProducts } from "../../hooks/useProducts";
 
-export default function Home() {
-	const { products } = useProducts();
+export function Favorites() {
+//   const { favorites } = useProducts();
   return (
     <main>
       <Header />
-	  {products.isLoading && <Loading />}
-	  {products.data && <ProductList products={products.data} />}
+      {/* {favorites.isLoading && <Loading />} */}
+      {/* {favorites.data && <ProductList products={[]} />} */}
     </main>
   );
 }
