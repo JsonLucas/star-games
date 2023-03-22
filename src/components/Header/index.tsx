@@ -7,108 +7,94 @@ import ModalCart from "../Modals/ModalCart";
 import { UserContext } from "../../contexts/user";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { useToast } from "../../hooks/useToast";
-import { Box, Input, Text } from "@chakra-ui/react";
+import { Box, Flex, IconButton, Input, InputGroup, InputRightElement, Stack, Text } from "@chakra-ui/react";
+import HeaderLinks from "./HeaderLinks";
 
 export default function Header() {
-    const [focus, setFocus] = useState<boolean>(false);
+	const [focus, setFocus] = useState<boolean>(false);
 	const { isLogged, userLevel } = useContext(UserContext);
 	const { removeAuth } = useLocalStorage();
 	const { genericToast } = useToast();
-    const [open, setOpen] = useState<boolean>(false);
-    const logout = () => {
-        try{
+	const [open, setOpen] = useState<boolean>(false);
+	const logout = () => {
+		try {
 			removeAuth();
-            window.location.reload();
-        }catch(e: any){
-            console.log(e);
-            genericToast({message: e.message, type: 'error'});
-        }
-    }
-    return (
-        <Box {...Container}>
-            <Box {...MainRow} position='relative'>
-                {!isLogged && (
-                    <Box position='absolute' top='20px' left='20px' fontSize='18px' color='white'>
-                        Ainda não tem uma conta? 
+			window.location.reload();
+		} catch (e: any) {
+			console.log(e);
+			genericToast({ message: e.message, type: 'error' });
+		}
+	}
+	return (
+		<Stack {...Container}>
+			<Flex w='100%' h='50%' justifyContent='space-around' alignItems='center' bgColor='transparent'>
+				{!isLogged && (
+					<Box fontSize='18px' color='white'>
+						Ainda não tem uma conta?
 						<Link to='/sign-up'><Text fontSize='20px' fontWeight='bold'>Cadastre-se!</Text></Link>
-                    </Box>
-                )}
-                {isLogged && userLevel && (
-                    <Box {...BoxLevelData} position='absolute'>
-                        <Box {...StarLevel} position='relative'>
-                            <IoIosStar color="yellow" />
-                            <Text position='absolute' {...StarLevelText}>{userLevel.id}</Text>
-                        </Box>
-                        <Box textAlign='center' color='white'>
-                            <ProgressBar completed={userLevel.totalScore} 
-                            maxCompleted={userLevel.totalPoints} width='200px' height="15px" 
-                            bgColor="grey" baseBgColor="white" isLabelVisible={false} />
-                            {userLevel.name}
-                        </Box>
-                        <Box {...StarLevel} position='relative'>
-                            <IoIosStar color="yellow" />
-                            <Text position='absolute' {...StarLevelText}>
+					</Box>
+				)}
+				{isLogged && userLevel && (
+					<Flex bgColor='transparent' justifyContent='space-between' alignItems='center'>
+						<Box h='100%' w='30px' display='flex' justifyContent='center' alignItems='center' bgColor='transparent' fontSize='33px' position='relative'>
+							<IoIosStar color="yellow" />
+							<Text position='absolute' m='0 auto' fontSize='15px' fontWeight='bold'>{userLevel.id}</Text>
+						</Box>
+						<Box textAlign='center' color='white'>
+							<ProgressBar completed={userLevel.totalScore}
+								maxCompleted={userLevel.totalPoints} width='200px' height="15px"
+								bgColor="grey" baseBgColor="white" isLabelVisible={false} />
+							{userLevel.name}
+						</Box>
+						<Box h='100%' w='30px' display='flex' justifyContent='center' alignItems='center' bgColor='transparent' fontSize='33px' position='relative'>
+							<IoIosStar color="yellow" />
+							<Text position='absolute' m='0 auto' fontSize='15px' fontWeight='bold'>
 								{userLevel.id + 1}
 							</Text>
-                        </Box>
-                    </Box>
-                )}
-                <Box {...SearchBox}>
-                    <Input p='8px' w='90%' border='none' borderRadius='5px' _focus={{outline: 0}}
-                        type="search"
-                        name="search"
-                        placeholder={`Buscar por: `}
-                        onClick={() => {
-                            setFocus(true);
-                        }}
-                        onBlur={() => {
-                            setFocus(false);
-                        }}
-                    />
-                    <IoIosSearch size={25} color="black" />
-                </Box>
-                <Box position='absolute' {...SignOptionsBox}>
-                    {isLogged && <>
-                        <Text {...SignOptionsText} onClick={logout}>Sair</Text>
-                        <Text {...SignOptionsText}>
-                            <IoIosLogOut size={21} color="white" />
-                        </Text>
-                    </>
-                    }{!isLogged && <>
-                        <Link to="/login">
-                            <Text {...SignOptionsText}>Entrar</Text>
-                        </Link>
-                        <Text {...SignOptionsText}>
-                            <IoIosLogIn size={21} color="white" />
-                        </Text>
-                    </>
-                    }
-                </Box>
-            </Box>
-            <Box w='100%' h='50%' bgColor='transparent' display='flex' justifyContent='center' alignItems='center' position='relative'>
-                <Box h='75%' w='650px' display='flex' justifyContent='space-between'>
-                    <Box {...NavBarLink} textAlign='center'>
-                        <Link to="/">Home</Link>
-                    </Box>
-                    <Box {...NavBarLink} textAlign='center'>
-                        <Link to='/history'>Histórico</Link>
-                    </Box>
-                    <Box {...NavBarLink} textAlign='center'>
-                        <Link to='/favorites'>Favoritos</Link>
-					</Box>
-                    <Box {...NavBarLink} textAlign='center'>
-                        <Link to='/catalogue'>Todos os produtos</Link>
-                    </Box>
-                    {isLogged && <Box {...NavBarLink} textAlign='center'>
-                        <Link to='/profile'>Minha conta</Link>
-                    </Box>}
-                </Box>
-                <Box position='absolute' top='15px' right='30px' fontSize='25px' color='white' cursor='pointer' 
-				onClick={() => setOpen(true)}>
-                    <IoIosCart />
-                </Box>
-                <ModalCart open={open} setOpen={setOpen} />
-            </Box>
-        </Box>
-    );
+						</Box>
+					</Flex>
+				)}
+				<Flex justifyContent='space-around' bgColor='white' alignItems='center' borderRadius='5px' _focus={{outlineStyle: 'solid', outlineWidth: '3px', outlineColor: 'blue'}}>
+					<InputGroup>
+						<Input p='8px' w='100%' border='none' borderRadius='5px' _focus={{ outline: 0 }}
+							type="search"
+							name="search"
+							placeholder={`Buscar por: `}
+							onClick={() => {
+								setFocus(true);
+							}}
+							onBlur={() => {
+								setFocus(false);
+							}}
+						/>
+						<InputRightElement pointerEvents='none' children={<IoIosSearch size={25} color="black" />} />
+					</InputGroup>
+				</Flex>
+				<Box position='absolute' right='20px' top='20px' display='flex' w='90px' justifyContent='space-around' bgColor='transparent' cursor='pointer'>
+					{isLogged && <Flex alignItems='center' color='white' fontSize='20px' fontWeight='bold'>
+						<Text onClick={logout}>Sair</Text>
+						<Text>
+							<IoIosLogOut size={21} color="white" />
+						</Text>
+					</Flex>
+					}{!isLogged && <Flex alignItems='center' color='white' fontSize='20px' fontWeight='bold'>
+						<Link to="/login">
+							<Text>Entrar</Text>
+						</Link>
+						<Text>
+							<IoIosLogIn size={21} color="white" />
+						</Text>
+					</Flex>
+					}
+				</Box>
+			</Flex>
+			<Flex w='100%' bgColor='transparent' justifyContent='space-between' alignItems='center' position='relative'>
+				<Flex w='calc(90% - 25px)' justifyContent='space-around'>
+					<HeaderLinks />
+				</Flex>
+				<IconButton aria-label='Carrinho' fontSize='25px' colorScheme='lightgrey' color='white' mr='10px' cursor='pointer' onClick={() => setOpen(true)} variant='ghost' icon={<IoIosCart />} _hover={{ bgColor: 'lightgrey', color: 'black' }} />
+				<ModalCart open={open} setOpen={setOpen} />
+			</Flex>
+		</Stack>
+	);
 }
