@@ -1,10 +1,14 @@
-import { Button } from '@chakra-ui/react';
+import { Box, Button } from '@chakra-ui/react';
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../../../contexts/user';
 
 export default function HeaderLinks() {
-  const style = {};
+  const style = {
+	variant: 'ghost',
+	color: 'white',
+	_hover: { color: 'grey' }
+  };
   const { isLogged, userLevel } = useContext(UserContext);
   return (
     <>

@@ -1,17 +1,15 @@
-import { Box } from "@chakra-ui/react";
-import { ThreeDots } from "react-loader-spinner";
+import { Box, Flex, Spinner } from "@chakra-ui/react";
 
 export default function Loading() {
   return (
-    <Box
+    <Flex
       position="absolute"
       w="100%"
       h="100%"
-      display="flex"
       justifyContent="center"
       alignItems="center"
     >
-      <ThreeDots height={40} width={40} color="red" />
-    </Box>
+      <Spinner thickness="5px" color="grey" size='md' />
+    </Flex>
   );
 }

@@ -7,7 +7,7 @@ import ModalCart from "../Modals/ModalCart";
 import { UserContext } from "../../contexts/user";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { useToast } from "../../hooks/useToast";
-import { Box, Flex, IconButton, Input, InputGroup, InputRightElement, Stack, Text } from "@chakra-ui/react";
+import { Box, Flex, IconButton, Input, InputGroup, InputRightElement, Spacer, Stack, Text } from "@chakra-ui/react";
 import HeaderLinks from "./HeaderLinks";
 
 export default function Header() {
@@ -26,13 +26,13 @@ export default function Header() {
 		}
 	}
 	return (
-		<Stack {...Container}>
-			<Flex w='100%' h='50%' justifyContent='space-around' alignItems='center' bgColor='transparent'>
+		<Stack w='100%' h='100px' bgColor='black' fontFamily="'Silkscreen', cursive">
+			<Flex w='100%' h='50%' p='10px' justifyContent='space-between' alignItems='center' bgColor='transparent'>
 				{!isLogged && (
-					<Box fontSize='18px' color='white'>
+					<Flex alignItems='center' fontSize='18px' color='white'>
 						Ainda não tem uma conta?
-						<Link to='/sign-up'><Text fontSize='20px' fontWeight='bold'>Cadastre-se!</Text></Link>
-					</Box>
+						<Link to='/sign-up'><Text pl='5px' fontSize='20px' fontWeight='bold'>Cadastre-se!</Text></Link>
+					</Flex>
 				)}
 				{isLogged && userLevel && (
 					<Flex bgColor='transparent' justifyContent='space-between' alignItems='center'>
@@ -60,21 +60,17 @@ export default function Header() {
 							type="search"
 							name="search"
 							placeholder={`Buscar por: `}
-							onClick={() => {
-								setFocus(true);
-							}}
-							onBlur={() => {
-								setFocus(false);
-							}}
+							onClick={() => setFocus(true) }
+							onBlur={() => setFocus(false) }
 						/>
 						<InputRightElement pointerEvents='none' children={<IoIosSearch size={25} color="black" />} />
 					</InputGroup>
 				</Flex>
-				<Box position='absolute' right='20px' top='20px' display='flex' w='90px' justifyContent='space-around' bgColor='transparent' cursor='pointer'>
+				<Flex direction='row' alignItems='center' justifyContent='space-around' bgColor='transparent' cursor='pointer'>
 					{isLogged && <Flex alignItems='center' color='white' fontSize='20px' fontWeight='bold'>
 						<Text onClick={logout}>Sair</Text>
 						<Text>
-							<IoIosLogOut size={21} color="white" />
+							<IoIosLogOut size={21}  color="white" />
 						</Text>
 					</Flex>
 					}{!isLogged && <Flex alignItems='center' color='white' fontSize='20px' fontWeight='bold'>
@@ -86,10 +82,10 @@ export default function Header() {
 						</Text>
 					</Flex>
 					}
-				</Box>
+				</Flex>
 			</Flex>
-			<Flex w='100%' bgColor='transparent' justifyContent='space-between' alignItems='center' position='relative'>
-				<Flex w='calc(90% - 25px)' justifyContent='space-around'>
+			<Flex w='100%' bgColor='transparent' alignItems='center' position='relative'>
+				<Flex w='50%' justifyContent='space-around' ml='auto' mr='auto'>
 					<HeaderLinks />
 				</Flex>
 				<IconButton aria-label='Carrinho' fontSize='25px' colorScheme='lightgrey' color='white' mr='10px' cursor='pointer' onClick={() => setOpen(true)} variant='ghost' icon={<IoIosCart />} _hover={{ bgColor: 'lightgrey', color: 'black' }} />

@@ -2,7 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { IoIosHeartEmpty, IoIosHeart } from "react-icons/io";
 import { useProducts } from "../../hooks/useProducts";
-import { Box, Image, Text } from "@chakra-ui/react";
+import { Box, Flex, Image, Stack, Text } from "@chakra-ui/react";
 import { useToast } from "../../hooks/useToast";
 import { Products } from "../../types/products";
 
@@ -37,26 +37,26 @@ export default function ProductList({ products }: Props) {
     // }
   };
   return (
-    <Box
+    <Stack
       p="10px"
-      w="92%"
+      w="95%"
       bgColor="transparent"
       m="15px auto"
       position="relative"
       fontFamily="'Silkscreen', cursive"
     >
-      <Box w="100%">
+      <Flex w="100%" flexWrap='wrap'>
         {products.map((item, index) => (
-          <Box
+          <Stack
             w="230px"
             h="400px"
             bgColor="white"
             boxShadow="0px 0px 5px 0px rgba(0, 0, 0, 0.3)"
             cursor="pointer"
             position="relative"
-            float="left"
-            m="0px 14.2px 15px 0px"
             key={index}
+			direction='column'
+			alignItems='center'
           >
             <Text
               position="absolute"
@@ -130,9 +130,9 @@ export default function ProductList({ products }: Props) {
                 {!features && <>Frete: R$ {item.shipping}</>}
               </Box>
             </Box>
-          </Box>
+          </Stack>
         ))}
-      </Box>
-    </Box>
+      </Flex>
+    </Stack>
   );
 }
